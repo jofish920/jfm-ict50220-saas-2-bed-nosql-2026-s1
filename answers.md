@@ -1,6 +1,7 @@
 ---
 updated: 2024-10-24T00:16
 created: 2024-10-23T21:09
+reference-location: section
 ---
 # Answers
 
@@ -145,7 +146,7 @@ Put an X between each of the pairs of `[ ]` when you have completed the task:
 > - [x] Created an empty `.gitignore` file in the assets folder.
 > - [x] Downloaded the provided `sample.gitignore` file, moved it into the repository folder, and renamed it to `.gitignore`.
 > - [x] Placed a copy of the assessment's Word document into the repository folder.
-> - [ ] Added all the new files and folders to the repository, commited them to version control, and pushed them to your private remote repository.
+> - [x] Added all the new files and folders to the repository, commited them to version control, and pushed them to your private remote repository.
 
 ---
 
@@ -157,9 +158,22 @@ This step verifies you understand concepts that includes, but is not limited to 
 
 Briefly explain what is meant by the terms database, collection, document and field in terms of MongoDB.
 
-> ANSWER_HERE
+> A database consists of a group of collections, each of which hold a number of documents that hold similar
+> information.  Each document may contain a number of key-value pairs, where the key-value pair represents a
+> field.
 >
+> In SQL terms, a database would be a database, a collection would be a table, a document a row (or record)
+> and a field a column (or field):
 >
+> | MongoDB    | SQL Equivalent | Purpose                                           |
+> |------------|----------------|---------------------------------------------------|
+> | database   | database       | Models entities relevant to the application       |
+> | collection | table          | Holds information on a particular class of entity |
+> | document   | row / record   | Holds information on a single entity [^1]         |
+> | field      | column / field | Holds a piece of information about the entity     |
+>
+> [^1]: In MongoDB, fields may contain or refer to documents, in SQL only
+> the latter is possible.
 
 ## 2.2 NoSQL Database Types
 
@@ -170,19 +184,37 @@ Briefly outline the key features and advantages for TWO of the following NoSQL d
 - Wide-Column Oriented Database
 - Graph Database
 
-> #
-
-## Database Type 1: NAME_HERE
+## Database Type 1: Document Database
 >
-> ANSWER_HERE
-
-
-> #
-
-## Database Type 2: NAME_HERE
+> This is the category that includes MongoDB.
 >
-> ANSWER_HERE
+> Advantages of document databases include:
+>
+> - Flexible schema, allowing differences in structure between items stored in the
+>   same collection.  This allows the storage of semi-structured data, effectively permitting
+>   a collection to store a number of different subtypes of the same general type of entity.
+>
+>   Flexible schema also support ad-hoc modifications and there is a better mapping between objects
+>   at the application level and objects stored in the database.
+>
+> - Horizontal scalability: the combination of the ability to store more data in an object by
+>   embedding related documents and the more relaxed guarantees of consistency in systems like
+>   MondoDB makes implementing features like replication and sharding simpler than with SQL databases,
+>   allowing storage and computation to be divided between many servers with more limited resources than
+>   might be required by an SQL database of similar scale.
 
+## Database Type 2: Key-Value Stores
+>
+> This is probably the simplest type of database after flat-file databases.
+> Key-value stores do not necessarily impose a structure on what is stored.
+> They essentially consist of a data structure that allows a value to be read or written using an
+> associated "key" value.
+> B-Trees or hash tables are commonly used for implementing such data-stores.
+>
+> The advantage of key-value stores is their extreme simplicity, which tends to be
+> associated with low resource use and high speed.
+> The obvious disadvantage is that they do not typically offer support for representing
+> relationships between stored values.
 
 ## 2.3 NoSQL Database Systems
 
@@ -190,19 +222,24 @@ Provide one example product (commercial or open source) for each of your NoSQL N
 
 You may **NOT** include _MongoDB_ which is an example of a _Document Database_.
 
-> #
+> You just wanted an example?  I included several before realising that I wasn't actually expected to go into any detail
+> describing them.  The references are to Wikipedia pages as I am not including any details that need backing up.
 
-## Database Type 1: NAME_HERE
->
-> ANSWER_HERE
+## Database Type 1: Document Database
 
+> There are a number of popular document databases other than MongoDB: CouchDB, PouchDB (a JavaScript version of CouchDB),
+> and Couchbase (which has a common origin with CouchDB, but has diverged significantly).
 
-> #
+## Database Type 2: Key-value Store
 
-## Database Type 2: NAME_HERE
->
-> ANSWER_HERE
+> Key-value stores have been around for quite some time.
+> Early(ish) examples include [DBM] and its successors NDBM, [GDBM], and [Berkeley DB][BDB].
+> More recent implementations include [LDBM], [LevelDB], and in-memory stores like Redis.
 
+[DBM]: https://en.wikipedia.org/wiki/DBM_%28computing%29
+[BDB]: https://en.wikipedia.org/wiki/Berkeley_DB
+[LDBM]: https://en.wikipedia.org/wiki/Lightning_Memory-Mapped_Database
+[LevelDB]: https://en.wikipedia.org/wiki/LevelDB
 
 ## 2.4 NoSQL Database Uses
 
@@ -212,18 +249,38 @@ The situations/application of the database types must be different.
 
 > #
 
-## Database Type 1: NAME_HERE
+## Database Type 1: Document Store
+
+> Document stores are useful when the ability to make rapid changes to the data format is
+> important (such as in rapid development / prototyping), where the information available
+> may vary over time or according to the source (such as when recording time-series data
+> from a rage of IoT devices), or when horizontal scalability and the associated fast access
+> to data is more important than strict consistency (for example, in a messaging system or
+> for use in website analytics).
+
+## Database Type 2: Key-Value Store
+
+> Key-value stores are useful in places where more powerful abstractions that support relationships
+> between entities are not needed and speed or low resource use are essential.
+> Embedded key-value stores are common, where the implementation is provided as a library that is linked
+> into the executable.
 >
-> ANSWER_HERE
-
-
-> #
-
-## Database Type 2: NAME_HERE
+> `Redis` is an extremely fast in-memory key-value store that is often used for caching and session
+> management in web applications and similar contexts where fast responses are needed and the
+> lifespan of the process serving a request is limited to the lifespan of a single request.
 >
-> ANSWER_HERE
+> `NDBM` (and relatives) are used in programs like `sendmail` for fast lookup of values when
+> performing authentication or routing messages.
+>
+> IOT platforms may also make use of on-disk key-value stores because they typically have a much lower
+> overhead than other types of database.
+>
+> Key-value stores have also been used in the implementation of other types of database,
+> for example `GDBM` was used in the original implementation of `sqlite` (see [timeline][sqlite-gdbm]),
+> and, later, Oracle produced its own [version that used BDB][sqlite-bdb].
 
-
+[sqlite-gdbm]: https://sqlite.org/src/timeline?c=6ecc8b20d4f402f4&y=a
+[sqlite-bdb]: https://www.oracle.com/technetwork/database/berkeleydb/bdb-sqlite-comparison-wp-176431.pdf
 
 # Step 3: NoSQL Databases & Collections
 
