@@ -16,26 +16,26 @@ created: 2024-10-23T21:09
 
 Replace GIVEN_NAME_HERE, FAMILY_NAME_HERE and STUDENT_ID_HERE entries with your details:
 
-| Given Name      | Family Name      | Student ID      |
-|-----------------|------------------|-----------------|
-| Anna            | Seed             | x1234567890     |
-| GIVEN_NAME_HERE | FAMILY_NAME_HERE | STUDENT_ID_HERE |
+| Given Name | Family Name | Student ID  |
+|------------|-------------|-------------|
+| Anna       | Seed        | x1234567890 |
+| Josef      | Meyer       | 20089460    |
 
 
 
 # Declaration
 
-I, THE ABOVE NAMED student, by submitting this assessment, I am acknowledging the following:
+I, Josef Meyer, by submitting this assessment, I am acknowledging the following:
 
 - The submission is completely my own work.
 - I have not used AI in the formuation of the answers within this assessment.
 - I have acknowledged all sources of information used in this work (if required).
 - I have kept a copy of this assessment (where practicable).
 - I understand a copy of my assessment will be kept by TAFE for their records.
-- I understand my assessment may be selected for use in the TAFEs validation and audit process to ensure student assessment meets requirements.
+- I understand my assessment may be selected for use in the TAFEs validation and audit process
+  to ensure student assessment meets requirements.
 
 When submitting this assessment, I am accepting the above acknowledgement.
-
 
 ---
 
@@ -65,7 +65,7 @@ Example:
 ## Question Z - How many sofwarte developers does it take to change a lightbulb?
     
     > None. 
-	> It is a hardware problem.
+ > It is a hardware problem.
 ```
 
 ## Answer Requiring Code
@@ -75,21 +75,22 @@ When answering a question that requires code to be included, use a "code block",
 Example:
 
 ```markdown
-	
+ 
 
 ## Question X - Title
 
-	Query Solution:
+ Query Solution:
 
-	```js
-	db.collection_name.find();
-	```
+ ```js
+ db.collection_name.find();
+ ```
+
 ```
 
-> Note: 
+> Note:
 >
 > The NoSQL code used to answer the question is contained in a code block,wich opens with three back-ticks (\`\`\`) followed by js, contains the code on the lines below, and ends with three back-ticks (\`\`\`) at the start of the next line after the code. An example is shown above.
-> 
+>
 > It is important that code blocks start at the beginning of the line for formatting on GitHub, Obsidian or your preferred IDE render the code correctly.
 
 ## Answer Requiring Image(s) to Be Inserted
@@ -131,14 +132,19 @@ This step provides a checklist for yout to ensure you have set up the assessment
 
 Put an X between each of the pairs of `[ ]` when you have completed the task:
 
-> - [ ] Create a new **empty** & **private** repository on GitHub (or the equivalent).
-> - [ ] Repository is named `xxx-ICT50220-SaaS-2-BED-NoSQL` replacing `xxx` with your initials.
-> - [ ] Cloned the repository to your local PC.
-> - [ ] Created a new folder called `assets` inside your cloned repository.
-> - [ ] Created an empty `ReadMe.md`.
-> - [ ] Created an empty `.gitignore` file in the assets folder.
-> - [ ] Downloaded the provided `sample.gitignore` file, moved it into the repository folder, and renamed it to `.gitignore`.
-> - [ ] Placed a copy of the assessment's Word document into the repository folder.
+> - [x] Create a new **empty** & **private** repository on GitHub (or the equivalent).
+> - [ ] Repository is named
+>    `xxx-ICT50220-SaaS-2-BED-NoSQL`
+>    replacing `xxx` with your initials.  
+>    **No:** name is
+>    `jfm-ict50220-saas-2-bed-nosql-2026-s1`
+>    (as suggested in instructions)
+> - [x] Cloned the repository to your local PC.
+> - [x] Created a new folder called `assets` inside your cloned repository.
+> - [x] Created an empty `ReadMe.md`.
+> - [x] Created an empty `.gitignore` file in the assets folder.
+> - [x] Downloaded the provided `sample.gitignore` file, moved it into the repository folder, and renamed it to `.gitignore`.
+> - [x] Placed a copy of the assessment's Word document into the repository folder.
 > - [ ] Added all the new files and folders to the repository, commited them to version control, and pushed them to your private remote repository.
 
 ---
@@ -153,7 +159,7 @@ Briefly explain what is meant by the terms database, collection, document and fi
 
 > ANSWER_HERE
 >
-> 
+>
 
 ## 2.2 NoSQL Database Types
 
@@ -168,14 +174,14 @@ Briefly outline the key features and advantages for TWO of the following NoSQL d
 
 ## Database Type 1: NAME_HERE
 >
->  ANSWER_HERE
+> ANSWER_HERE
 
 
 > #
 
 ## Database Type 2: NAME_HERE
 >
-> ANSWER_HERE 
+> ANSWER_HERE
 
 
 ## 2.3 NoSQL Database Systems
@@ -232,7 +238,7 @@ What naming convention will you use for the database, collections and fields use
 Justify why did you choose this naming convention?
 
 > ANSWER_HERE
-> 
+>
 >
 
 ## 3.2 Connecting
@@ -242,7 +248,7 @@ Justify why did you choose this naming convention?
 Add the Connection String used to connect to your MongoDB Atlas instance:
 
 > ```js
-> 	MONGODB_CONNECTION_STRING_HERE
+>  MONGODB_CONNECTION_STRING_HERE
 > ```
 
 
@@ -253,7 +259,7 @@ Add the Connection String used to connect to your MongoDB Atlas instance:
 - Create and use a database named `saas_bed_portfolio_2025s2`.
 
 > ```js
-> 	CREATE_AND_USE_DATABASE_IN_MONGODB_ANSWER_HERE
+>  CREATE_AND_USE_DATABASE_IN_MONGODB_ANSWER_HERE
 > ```
 
 Did you encounter any issues when creating the database? If you did, how did you resolve them?
@@ -292,7 +298,7 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 - Provide the schema validation code for the collection.
 
 > ```js
-> 	SCHEMA_VALIDATION_CODE_HERE
+>  SCHEMA_VALIDATION_CODE_HERE
 > ```
 
 
@@ -302,7 +308,7 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 - Create a new collection named _films_ and insert the provided data (full statement)
 
 > ```js
-> 	CREATE_COLLECTION_IN_MONGODB_ANSWER_HERE
+>  CREATE_COLLECTION_IN_MONGODB_ANSWER_HERE
 > ```
 
 
@@ -322,14 +328,14 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
 
 ## 4.2 Inserting Data
 
-From the LMS, download the provided data files, and determine which one you will use to import data into the collection. 
+From the LMS, download the provided data files, and determine which one you will use to import data into the collection.
 
 The options are: `film-data-tsv.txt`, `film-data-csv.txt`, and `film-data-json.txt`.
 
@@ -340,7 +346,7 @@ What was the complete command you used to perform the import of the provided sam
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -362,9 +368,9 @@ Add the provided additional sample data into the films collection in the order p
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 
 
 ## 5.2 Retrieve all films written by…
@@ -374,7 +380,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -390,9 +396,9 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 
 
 ## 5.4 Retrieve films from a franchise…
@@ -402,9 +408,9 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 
 
 ## 5.5 Retrieve films released in range…
@@ -414,9 +420,9 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 Screen Shot:
 
 ![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
@@ -429,7 +435,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -440,9 +446,9 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 Screen Shot:
 
 ![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
@@ -458,9 +464,9 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
-	
+
 
 
 ## 6.2 Update document with an actor
@@ -470,7 +476,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -490,7 +496,7 @@ Performing searches on collections.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -506,7 +512,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -522,7 +528,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -538,7 +544,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -554,7 +560,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -575,7 +581,7 @@ This step requires you to remove films from the collection.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -594,7 +600,7 @@ Delete the film “`Fictionally Fake Film`” by:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -610,7 +616,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -631,16 +637,16 @@ Using the films collection, create the indexes to match the following conditions
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
-- Create an index on the `year` and `title ` fields.
+- Create an index on the `year` and `title` fields.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 - Create an index on the `franchise`, `title`, `actors`, `year` fields.
@@ -649,30 +655,30 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
 ## 9.2 Indexes for Full Text Search
 
-- Create a text index on the `title ` and `summary` fields.
+- Create a text index on the `title` and `summary` fields.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
 ## 9.3 Verifying Execution Plans
 
-- Check the execution plan for a query that finds the films with a title containing “Star”. 
+- Check the execution plan for a query that finds the films with a title containing “Star”.
 - Check if the created index is being used.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -688,7 +694,7 @@ Screen Shot:
 
 > ANSWER_HERE
 >
-> 
+>
 
 
 # Step 10: Aggregation
@@ -703,7 +709,7 @@ In this step you will be aggregating data within a collection.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -715,7 +721,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -727,7 +733,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -743,7 +749,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -754,12 +760,12 @@ Using the films collection, we are now going to create triggers to provide an au
 
 ## 11.1 Create trigger for inserted data
 
-- Create a trigger that monitors the films collection for new data being added. 
+- Create a trigger that monitors the films collection for new data being added.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -771,19 +777,19 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
 
 ## 11.3 Create trigger for updated data
 
-- Create a trigger that monitors the films collection for new data being added. 
+- Create a trigger that monitors the films collection for new data being added.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
@@ -799,19 +805,19 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
 
 ## 11.5 Create trigger for deleted data
 
-- Create a trigger that monitors the films collection for new data being added. 
+- Create a trigger that monitors the films collection for new data being added.
 
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -822,7 +828,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 
@@ -834,7 +840,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+ db.collection_name.find();
 ```
 
 Screen Shot:
