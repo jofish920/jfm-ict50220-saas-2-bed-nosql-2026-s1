@@ -374,7 +374,7 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 > |                     | actors.*        | string            |                      |
 > | Directors           | directors       | array             | max: 10              |
 > |                     | directors.*     | string            |                      |
-> | Genres              | genres          | array             | max: 10              |
+> | Genres              | genres          | array             | max: 20              |
 > |                     | genres.*        | string            |                      |
 > | IMDB ID             | imdb_id         | string            | `/^[a-z]{2}\d{7,}$/` |
 
@@ -385,7 +385,7 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 > options = {
 >   validator: {
 >     '$jsonSchema': {
->       required: [ 'title', 'year' ],
+>       required: [ 'title' ],
 >       properties: {
 >         title: { bsonType: 'string', minLength: 1 },
 >         year: { bsonType: 'int', minimum: 1870, maximum: 2500 },
@@ -411,10 +411,11 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 >         },
 >         genres: {
 >           bsonType: 'array',
->           maxItems: 10,
+>           maxItems: 20,
 >           items: { bsonType: 'string' }
 >         },
->         imdb_id: { pattern: '^[a-z]{2}d{7,}$' }
+>         imdb_id: { pattern: "^[a-z]{2}\\d{7,}$" },
+>         imdb_rating: { bsonType: 'decimal' },
 >       }
 >     }
 >   }
@@ -446,7 +447,7 @@ Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 
 Screen Shot:
 
-![Step 3.5 Screenshot](assets/step-3-001.png)
+![Step 3.5 Screenshot](assets/step-3-5.png)
 
 
 
@@ -459,10 +460,25 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
-
+> ```js
+> db.films.insertMany([
+>     {
+>         title: "My Dearest Assassin",
+>         writers: ["Watthana Veerayawatthana"],
+>         actors: ["Pimchanok Luevisadpaibul", "Tor Thanapob Leeratanakachorn", "Sivakorn Adulsuttiku"],
+>         year: 2026,
+>         running_time: 127,
+>         budget: 237000000,
+>         genre: ["Action", "Romance", "Thai", "Thriller", "Drama"],
+>     },
+>     {
+>         title: "Fictionally Fake Film",
+>     },
+>     {
+>         title: "You Cannae be Serious About a Fictional Film",
+>     }
+> ]);
+> ```
 
 
 ## 4.2 Inserting Data
@@ -477,8 +493,12 @@ What was the complete command you used to perform the import of the provided sam
 
 Query Solution:
 
-```js
- db.collection_name.find();
+```bash
+mongoimport "mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_portfolio_2026s1"\
+  --password="$MONGOPASS_20089460"\
+  --collection=films\
+  --jsonArray\
+  film-data.json
 ```
 
 
