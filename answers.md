@@ -288,15 +288,34 @@ The situations/application of the database types must be different.
 
 What naming convention will you use for the database, collections and fields used in the assessment scenario?
 
-> ANSWER_HERE
+> Database and collection names will be in `snake_case`.
 >
->
+> Field names will als be in `snake_case`.
 
 Justify why did you choose this naming convention?
 
-> ANSWER_HERE
+> The choice of snake case for collections is influenced by the default mapping between class names
+> and table names used by Eloquent (see[^laravel-13-docs] Laravel Team (n.d.), subsection on [table names][eloquent-table-names])
 >
+> My general preference would be to use camel case based both a desire to match the property
+> names in objects and an article on the use of camel case for field names on the MongoDB website
+> (see[^mongo-field-names] Morgan, 2025).
+> However, there is a case for leaving things in snake case, given the use of snake case in the sample data.
+> The following function would perform the conversion, but there is the possibility of existing code
+> that assumes the current data format:
 >
+> ```javascript
+> function convertKeysToCamelCase(item) {
+>   if (Array.isArray(item)) return item.map(convertKeysToCamelCase);
+>   if ('object' != typeof(item)) return item;
+>   return Object.fromEntries(Object.entries(item).map(
+>     ([k,v]) => [k.replace(/([a-z])_([a-z])/g, (_,a,b) => a+b.toUpperCase()), v]
+>   ));
+> }
+> ```
+
+[eloquent-table-names]: https://laravel.com/docs/13.x/eloquent#table-names
+
 
 ## 3.2 Connecting
 
@@ -305,7 +324,7 @@ Justify why did you choose this naming convention?
 Add the Connection String used to connect to your MongoDB Atlas instance:
 
 > ```js
->  MONGODB_CONNECTION_STRING_HERE
+>  mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_portfolio_2026s1
 > ```
 
 
@@ -315,14 +334,21 @@ Add the Connection String used to connect to your MongoDB Atlas instance:
 
 - Create and use a database named `saas_bed_portfolio_2025s2`.
 
+Note: this should not actually be necessary, because I used the name of the database
+in the connection string.
+
 > ```js
->  CREATE_AND_USE_DATABASE_IN_MONGODB_ANSWER_HERE
+>  use('saas_bed_portfolio_2026s1')
 > ```
 
 Did you encounter any issues when creating the database? If you did, how did you resolve them?
 
-> ANSWER_HERE
+> My IP address had changed since I last tried to connect and my attempt to connect to the database timed out.
+> Permitting access to through the mongodb site fixed the problem.
+> I added the current address when following a link after attempting to connect to the cluster running the DB,
+> but the following URL can be used for editing the list of IP addresses permitted to connect:
 >
+> <https://cloud.mongodb.com/v2/6a21379b62e617d7de2359c6#/security/network/accessList>
 
 
 ## 3.4 Schema Design for Collection
@@ -333,45 +359,94 @@ In the `notes` column, add any clarifying details (such as rules) that may be us
 
 Replace `FIELD_NAME_HERE` and `DATA_TYPE_HERE` in the table below.
 
-> | Item                | Field Name      | MongoDB Data Type | Notes / Rules         |
-> |---------------------|-----------------|-------------------|-----------------------|
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> | Title               | FIELD_NAME_HERE | DATA_TYPE_HERE    | four digit year       |
-> | Year                | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> | Writers             | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> | Summary             | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> | Franchise           | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> | Running Time        | FIELD_NAME_HERE | DATA_TYPE_HERE    | minutes               |
-> | Budget              | FIELD_NAME_HERE | DATA_TYPE_HERE    | USD $                 |
-> | Box Office Takings  | FIELD_NAME_HERE | DATA_TYPE_HERE    | USD $                 |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
-> |                     | FIELD_NAME_HERE | DATA_TYPE_HERE    |                       |
+> | Item                | Field Name      | MongoDB Data Type | Notes / Rules        |
+> |---------------------|-----------------|-------------------|----------------------|
+> | Title               | title           | string            | 1 ≤ title.length     |
+> | Year                | year            | int               | 1870 ≤ year ≤ 2500   |
+> | Writers             | writers         | array             | max: 10              |
+> |                     | writers.*       | string            |                      |
+> | Summary             | summary         | string            | max(length): 255     |
+> | Franchise           | franchise       | string            |                      |
+> | Running Time        | running_time    | int               | minutes (max: 54000) |
+> | Budget              | budget          | int or long       | USD $                |
+> | Box Office Takings  | box_office      | int or long       | USD $                |
+> | Actors              | actors          | array             | max: 20              |
+> |                     | actors.*        | string            |                      |
+> | Directors           | directors       | array             | max: 10              |
+> |                     | directors.*     | string            |                      |
+> | Genres              | genres          | array             | max: 10              |
+> |                     | genres.*        | string            |                      |
+> | IMDB ID             | imdb_id         | string            | `/^[a-z]{2}\d{7,}$/` |
 
 
 - Provide the schema validation code for the collection.
 
 > ```js
->  SCHEMA_VALIDATION_CODE_HERE
+> options = {
+>   validator: {
+>     '$jsonSchema': {
+>       required: [ 'title', 'year' ],
+>       properties: {
+>         title: { bsonType: 'string', minLength: 1 },
+>         year: { bsonType: 'int', minimum: 1870, maximum: 2500 },
+>         writers: {
+>           bsonType: 'array',
+>           maxItems: 10,
+>           items: { bsonType: 'string' }
+>         },
+>         summary: { bsonType: 'string' },
+>         franchise: { bsonType: 'string' },
+>         runningTime: { bsonType: 'int', maximum: 54000 },
+>         budget: { bsonType: 'int', minimum: 0 },
+>         box_office: { bsonType: 'int', minimum: 0 },
+>         actors: {
+>           bsonType: 'array',
+>           maxItems: 20,
+>           items: { bsonType: 'string' }
+>         },
+>         directors: {
+>           bsonType: 'array',
+>           maxItems: 10,
+>           items: { bsonType: 'string' }
+>         },
+>         genres: {
+>           bsonType: 'array',
+>           maxItems: 10,
+>           items: { bsonType: 'string' }
+>         },
+>         imdb_id: { pattern: '^[a-z]{2}d{7,}$' }
+>       }
+>     }
+>   }
+> };
+> db.createCollection("films", options);
 > ```
-
-
 
 ## 3.5 Collection Creation
 
 - Create a new collection named _films_ and insert the provided data (full statement)
 
 > ```js
->  CREATE_COLLECTION_IN_MONGODB_ANSWER_HERE
+> db.createCollection('films');
+>
+> db.films.insertOne({
+>     title: "Star Trek: Nemesis",
+>     year: 2002,
+>     writers: [
+>         "John Logan", "Rick Berman", "Brent Spiner"
+>     ],
+>     summary: (
+>         "A clone of Picard, created by the Romulans, assassinates the Romulan Senate, "+
+>         "assumes absolute power, and lures Picard and the Enterprise to Romulus "+
+>         "under the false pretext of a peace overture."
+>     ),
+> });
 > ```
 
 
 Screen Shot:
 
-![Step 3.5 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.5 Screenshot](assets/step-3-001.png)
 
 
 
@@ -914,5 +989,10 @@ What is the URL for your GitHub (or equivalent) repository for this assessment?
 ```text
 add url here
 ```
+
+# References
+
+[^laravel-13-docs]: Laravel Team. (n.d.). Documentation (Version 13.x). [Online documentation]. <https://laravel.com/docs/13.x>
+[^mongo-field-names]: Morgan, A (2025, Sep 3) _The Difference a (Field) Name Makes: Reduce Document Size and Increase Performance_. Blog post. <https://www.mongodb.com/company/blog/technical/difference-field-name-makes-reduce-document-size-increase-performance>
 
 # END
