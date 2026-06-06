@@ -48,7 +48,7 @@ options = {
                         bsonType: "string",
                     },
                 },
-                imdb_id: { pattern: '^[a-z]{2}\d{7,}$' },
+                imdb_id: { pattern: "^[a-z]{2}\d{7,}$" },
             },
         },
     },
@@ -57,21 +57,22 @@ options = {
 db.films.insertOne({
     title: "Star Trek: Nemesis",
     year: 2002,
-    writers: [
-        "John Logan", "Rick Berman", "Brent Spiner"
-    ],
-    summary: (
-        "A clone of Picard, created by the Romulans, assassinates the Romulan Senate, "+
-        "assumes absolute power, and lures Picard and the Enterprise to Romulus "+
-        "under the false pretext of a peace overture."
-    ),
+    writers: ["John Logan", "Rick Berman", "Brent Spiner"],
+    summary:
+        "A clone of Picard, created by the Romulans, assassinates the Romulan Senate, " +
+        "assumes absolute power, and lures Picard and the Enterprise to Romulus " +
+        "under the false pretext of a peace overture.",
 });
 
 db.films.insertMany([
     {
         title: "My Dearest Assassin",
         writers: ["Watthana Veerayawatthana"],
-        actors: ["Pimchanok Luevisadpaibul", "Tor Thanapob Leeratanakachorn", "Sivakorn Adulsuttiku"],
+        actors: [
+            "Pimchanok Luevisadpaibul",
+            "Tor Thanapob Leeratanakachorn",
+            "Sivakorn Adulsuttiku",
+        ],
         year: 2026,
         running_time: 127,
         budget: 237000000,
@@ -82,7 +83,7 @@ db.films.insertMany([
     },
     {
         title: "You Cannae be Serious About a Fictional Film",
-    }
+    },
 ]);
 
 db.films.insertMany([
@@ -92,7 +93,7 @@ db.films.insertMany([
         writers: ["Stephen Beesform"],
         franchise: [],
         running_time: 192,
-        imdb_rating: 7.8
+        imdb_rating: 7.8,
     },
     {
         title: "Pee Wee Herman's Big Adventure",
@@ -101,8 +102,6 @@ db.films.insertMany([
         title: "A Fictional Tale as a Fake Film",
     },
 ]);
-
-
 
 // From: https://www.imdb.com/title/tt1170358/ (Desolation)
 
@@ -326,13 +325,9 @@ actorsSmaug = [
     "Nigel Zega",
 ];
 
-starsSmaug = [
-    "Ian McKellen", "Martin Freeman", "Richard Armitage"
-];
+starsSmaug = ["Ian McKellen", "Martin Freeman", "Richard Armitage"];
 
-starsJourney = [
-    "Martin Freeman", "Ian McKellen", "Richard Armitage"
-];
+starsJourney = ["Martin Freeman", "Ian McKellen", "Richard Armitage"];
 
 db.films.insertMany([
     {
@@ -345,7 +340,7 @@ db.films.insertMany([
             "Philippa Boyens",
             "Peter Jackson",
             "Guillermo del Toro",
-            "J.R.R. Tolkien"
+            "J.R.R. Tolkien",
         ],
         actors: starsSmaug,
         imdb_id: "tt1170358",
@@ -360,10 +355,36 @@ db.films.insertMany([
         actors: startsJourney,
         imdb_id: "tt0903624",
         imdb_rating: 7.8,
-    }
-])
+    },
+]);
 
 db.films.updateOne(
     { title: "Pulp Fiction" },
-    { $addToSet: { actor: "Samuel L. Jackson" }}
-)
+    { $addToSet: { actor: "Samuel L. Jackson" } },
+);
+db.films.updateOne(
+    { title: "Star Trek: Nemesis" },
+    {
+        $push: {
+            actors: {
+                $each: [
+                    "Patrick Stewart",
+                    "Jonathan Frakes",
+                    "Brent Spiner",
+                    "LeVar Burton",
+                    "Michael Dorn",
+                    "Gates McFadden",
+                    "Marina Sirtis",
+                ],
+            },
+        },
+    },
+);
+
+db.films.deleteOne({
+    title: "Pee Wee Herman's Big Adventure",
+});
+
+result = db.films.findOne({ title: "Fictionally Fake Film" });
+db.films.deteteOne(result._id);
+

@@ -1074,8 +1074,8 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
-<figcaption>Step 3.3 Screenshot</figcaption>
+<p><img src="assets/step-8.1.png" class="img-fluid figure-img"></p>
+<figcaption>Step 8.1 Screenshot</figcaption>
 </figure>
 </div>
 </section>
@@ -1087,12 +1087,15 @@ To insert an image use the following syntax:
 <li>Then using the found ID to remove the film</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">"Fictionally Fake Film"</span>})</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deteteOne</span>(result<span class="op">.</span><span class="at">_id</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
-<figcaption>Step 3.3 Screenshot</figcaption>
+<p><img src="assets/step-8.2.png" class="img-fluid figure-img"></p>
+<figcaption>Step 8.2 Screenshot</figcaption>
 </figure>
 </div>
 </section>
@@ -1102,11 +1105,13 @@ To insert an image use the following syntax:
 <li>Delete any films with the exact word “<code>Fictional</code>” in their title, ignoring case.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteMany</span>({</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">fictional</span><span class="sc">\b</span><span class="ss">/</span><span class="op">,</span> <span class="dt">$options</span><span class="op">:</span> <span class="st">"i"</span> }</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
+<p><img src="assets/step-8.3.png" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>

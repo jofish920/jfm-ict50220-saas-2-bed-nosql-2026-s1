@@ -887,7 +887,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 8.1 Screenshot](assets/step-8.1.png)
 
 
 ## 8.2 Remove a film by ID…
@@ -899,14 +899,14 @@ Delete the film “`Fictionally Fake Film`” by:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+> result = db.films.findOne({ title: "Fictionally Fake Film"})
+> db.films.deteteOne(result._id)
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
-
+![Step 8.2 Screenshot](assets/step-8.2.png)
 
 
 ## 8.3 Removing multiple films…
@@ -916,12 +916,14 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.films.find();
+ db.films.deleteMany({
+    title: { $regex: /\bfictional\b/, $options: "i" }
+ });
 ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 3.3 Screenshot](assets/step-8.3.png)
 
 
 
