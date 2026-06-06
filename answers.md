@@ -83,7 +83,7 @@ Example:
  Query Solution:
 
  ```js
- db.collection_name.find();
+ db.films.find();
  ```
 
 ```
@@ -559,9 +559,9 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find({franchise: ["The Hobbit"]});
-```
+> ```js
+>  db.films.find({franchise: "The Hobbit"});
+> ```
 
 ua
 ![Step 5.4 Screenshot](assets/step-5.4.png)
@@ -577,9 +577,9 @@ Just to compare, a screenshot of a franchise that actually has matching document
 
 Query Solution:
 
-```js
- db.films.find({ year: {$gte: 1980, $lte: 2020} });
-```
+> ```js
+>  db.films.find({ year: {$gte: 1980, $lte: 2020} });
+> ```
 
 Screen Shot:
 
@@ -592,9 +592,9 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.films.find({ running_time: { $gt: 120 }});
-```
+> ```js
+>  db.films.find({ running_time: { $gt: 120 }});
+> ```
 
 Screen Shot:
 
@@ -606,9 +606,9 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+>  db.films.find({ year: { $gt: 2022 }});
+> ```
 
 Screen Shot:
 
@@ -629,22 +629,22 @@ Screen Shot:
 
 Query Solution:
 
-```js
-smaug = {
- title: "The Hobbit: The Desolation of Smaug",
- summary: "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."
-}
-
-journey = {
- title: "The Hobbit: An Unexpected Journey",
- summary: "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug."
-};
-
-for (const update of [smaug, journey]) {
- const result = db.films.updateOne({ title: update.title }, { $set: { summary: update.summary } });
- console.log(result);
-}
-```
+> ```js
+> smaug = {
+>  title: "The Hobbit: The Desolation of Smaug",
+>  summary: "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."
+> }
+> 
+> journey = {
+>  title: "The Hobbit: An Unexpected Journey",
+>  summary: "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug."
+> };
+> 
+> for (const update of [smaug, journey]) {
+>  const result = db.films.updateOne({ title: update.title }, { $set: { summary: update.summary } });
+>  console.log(result);
+> }
+> ```
 
 Screenshots:
 
@@ -653,36 +653,36 @@ Screenshots:
 
 There really isn't much point trying to update documents that aren't in the database, so I'll add them now...
 
-```js
-db.films.insertMany([
-    {
-        title: "The Hobbit: The Desolation of Smaug",
-        year: 2013,
-        franchise: "The Hobbit",
-        directors: ["Peter Jackson"],
-        writers: [
-            "Fran Walsh",
-            "Philippa Boyens",
-            "Peter Jackson",
-            "Guillermo del Toro",
-            "J.R.R. Tolkien"
-        ],
-        actors: ["Ian McKellen", "Martin Freeman", "Richard Armitage"],
-        imdb_id: "tt1170358",
-        imdb_rating: 7.8,
-    },
-    {
-        title: "The Hobbit: An Unexpected Journey",
-        year: 2012,
-        franchise: "The Hobbit",
-        directors: ["Peter Jackson"],
-        writers: ["Fran Walsh", "Philippa Boyens", "Peter Jackson"],
-        actors: ["Martin Freeman", "Ian McKellen", "Richard Armitage"],
-        imdb_id: "tt0903624",
-        imdb_rating: 7.8,
-    }
-]);
-```
+> ```js
+> db.films.insertMany([
+>     {
+>         title: "The Hobbit: The Desolation of Smaug",
+>         year: 2013,
+>         franchise: "The Hobbit",
+>         directors: ["Peter Jackson"],
+>         writers: [
+>             "Fran Walsh",
+>             "Philippa Boyens",
+>             "Peter Jackson",
+>             "Guillermo del Toro",
+>             "J.R.R. Tolkien"
+>         ],
+>         actors: ["Ian McKellen", "Martin Freeman", "Richard Armitage"],
+>         imdb_id: "tt1170358",
+>         imdb_rating: 7.8,
+>     },
+>     {
+>         title: "The Hobbit: An Unexpected Journey",
+>         year: 2012,
+>         franchise: "The Hobbit",
+>         directors: ["Peter Jackson"],
+>         writers: ["Fran Walsh", "Philippa Boyens", "Peter Jackson"],
+>         actors: ["Martin Freeman", "Ian McKellen", "Richard Armitage"],
+>         imdb_id: "tt0903624",
+>         imdb_rating: 7.8,
+>     }
+> ]);
+> ```
 
 Then perform the update on the records added (see code above), to get the following result:
 
@@ -703,58 +703,64 @@ Screenshots:
 | **Star Trek VI: The Undiscovered Country** | Walter Koenig, Nichelle Nichols, George Takei, Kim Cattrall, David Warner |
 
 It is probably worth noting that only one of these films is actually in the database, and so only that film will be
-updated... (I'm not inserting them this time)
+updated... (this can be seen from the update count in the screenshots)
 
 Also, were it not for the requirement that the actors be added in the order specified, I would have used `$addToSet` instead
 of `$push` to ensure that the result contained no duplicates.
 
 Query Solution:
 
-```js
-db.films.updateOne(
-    { title: "Pulp Fiction" },
-    { $push: { actor: "Samuel L. Jackson" }}
-);
-
-db.films.updateOne(
-    { title: "Star Trek VI: The Undiscovered Country" },
-    { 
-        $push: { 
-            $each: [
-                "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan",
-                "Christopher Plummer"
-            ]
-        }
-    },
-);
-
-db.films.updateOne(
-    { title: "Star Trek: Nemesis" },
-    { 
-        $push: { 
-            $each: [
-                "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", 
-                "Michael Dorn", "Gates McFadden", "Marina Sirtis"
-            ]
-        }
-    },
-);
-
-db.films.updateOne(
-    { title: "Star Trek VI: The Undiscovered Country" },
-    { 
-        $push: { 
-            $each: [
-                "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
-            ]
-        }
-    },
-);
-```
+> ```js
+> db.films.updateOne(
+>     { title: "Pulp Fiction" },
+>     { $push: { actor: "Samuel L. Jackson" }}
+> );
+> 
+> db.films.updateOne(
+>     { title: "Star Trek VI: The Undiscovered Country" },
+>     { 
+>         $push: {
+>             actors: {
+>                 $each: [
+>                     "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"
+>                 ]
+>             }
+>         }
+>     },
+> );
+> 
+> db.films.updateOne(
+>     { title: "Star Trek: Nemesis" },
+>     {
+>         $push: {
+>             actors: {
+>                 $each: [
+>                     "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn", 
+>                     "Gates McFadden", "Marina Sirtis"
+>                 ],
+>             },
+>         },
+>     },
+> );
+> 
+> db.films.updateOne(
+>     { title: "Star Trek VI: The Undiscovered Country" },
+>     { 
+>         $push: { 
+>             $each: [
+>                 "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
+>             ]
+>         }
+>     },
+> );
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 6.2 Screenshot](assets/step-6.2a.png)
+![Step 6.2 Screenshot](assets/step-6.2b.png)
+![Step 6.2 Screenshot](assets/step-6.2c.png)
+![Step 6.2 Screenshot](assets/step-6.2d.png)
 
 
 # Step 7: CRUD – Searches
@@ -768,13 +774,13 @@ Performing searches on collections.
 
 Query Solution:
 
-```js
- db.collection_name.find( {title: { $regex: "^T" } });
-```
+> ```js
+>  db.films.find( {title: { $regex: "^T" } });
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 7.1a Screenshot](assets/step-7.1a.png)
 
 
 
@@ -784,13 +790,21 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+>  db.films.find({ genre: { $regex: "th" }});
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 7.2a Screenshot](assets/step-7.2a.png)
+
+Screenshot showing genres that occur in the dataset:
+
+![Step 7.2b Screenshot](assets/step-7.2b.png)
+
+Query repeated with something that produces at least 1 result:
+
+![Step 7.2c Screenshot](assets/step-7.2c.png)
 
 
 
@@ -800,13 +814,18 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+>  db.films.find({$and: [
+>     { summary: { $regex: "\\bCaptain\\b" } }, 
+>     { summary: { $not: {$regex: "\\bPike\\b" } } }
+> ]})
+> ```
+
+(annoyingly, it is apparently possible to use "$and" on predicate-expressions when using aggregation but not search)
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 7.3 Screenshot](assets/step-7.3.png)
 
 
 
@@ -816,13 +835,19 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+>  db.films.find({ summary: { $regex: "\\b(?:London|Brooklyn)\\b "} });
+> 
+>  // Or, no more efficiently:
+> 
+> db.films.find({
+>     $or: [{ summary: { $regex: "\\bLondon\\b "} }, { summary: { $regex: "\\bBrooklyn\\b "} }]
+> });
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 7.4 Screenshot](assets/step-7.4a.png)
 
 
 
@@ -832,14 +857,13 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+>  db.films.find({ $and: [ { summary: { $regex: "\\bteam\\b" } }, { summary: { $regex: "\\bsearch\\b" } } ]})
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
-
+![Step 7.5 Screenshot](assets/step-7.5.png)
 
 
 # Step 8: CRUD - Deletions
@@ -853,14 +877,17 @@ This step requires you to remove films from the collection.
 
 Query Solution:
 
-```js
- db.collection_name.find();
-```
+> ```js
+> // Could use either deleteOne or deleteMany
+> 
+>  db.films.deleteOne({
+>     title: "Pee Wee Herman's Big Adventure"
+>  })
+> ```
 
 Screen Shot:
 
 ![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
-
 
 
 ## 8.2 Remove a film by ID…
@@ -873,7 +900,7 @@ Delete the film “`Fictionally Fake Film`” by:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
@@ -889,7 +916,7 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
@@ -910,7 +937,7 @@ Using the films collection, create the indexes to match the following conditions
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -919,7 +946,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 - Create an index on the `franchise`, `title`, `actors`, `year` fields.
@@ -928,7 +955,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -939,7 +966,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -951,7 +978,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
@@ -982,7 +1009,7 @@ In this step you will be aggregating data within a collection.
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -994,7 +1021,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1006,7 +1033,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
@@ -1022,7 +1049,7 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1038,7 +1065,7 @@ Using the films collection, we are now going to create triggers to provide an au
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1050,7 +1077,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1062,7 +1089,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
@@ -1078,7 +1105,7 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1090,7 +1117,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1101,7 +1128,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -1113,7 +1140,7 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 Screen Shot:
