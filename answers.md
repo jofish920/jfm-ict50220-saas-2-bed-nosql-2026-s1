@@ -622,22 +622,134 @@ Screen Shot:
 
 - Using one or more queries, add the provided synopses to the indicated films.
 
+| **Film** | **Synopsis** |
+| --- |  --- |
+| **"The Hobbit: The Desolation of Smaug"** | "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring." |
+| **"The Hobbit: An Unexpected Journey"** | "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug." |
+
 Query Solution:
 
 ```js
- db.collection_name.find();
+smaug = {
+ title: "The Hobbit: The Desolation of Smaug",
+ summary: "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."
+}
+
+journey = {
+ title: "The Hobbit: An Unexpected Journey",
+ summary: "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug."
+};
+
+for (const update of [smaug, journey]) {
+ const result = db.films.updateOne({ title: update.title }, { $set: { summary: update.summary } });
+ console.log(result);
+}
 ```
 
+Screenshots:
 
+![Step 6.1 Screenshot (a)](assets/step-6.1a.png)
+![Step 6.1 Screenshot (b) (check if exists)](assets/step-6.1b.png)
+
+There really isn't much point trying to update documents that aren't in the database, so I'll add them now...
+
+```js
+db.films.insertMany([
+    {
+        title: "The Hobbit: The Desolation of Smaug",
+        year: 2013,
+        franchise: "The Hobbit",
+        directors: ["Peter Jackson"],
+        writers: [
+            "Fran Walsh",
+            "Philippa Boyens",
+            "Peter Jackson",
+            "Guillermo del Toro",
+            "J.R.R. Tolkien"
+        ],
+        actors: ["Ian McKellen", "Martin Freeman", "Richard Armitage"],
+        imdb_id: "tt1170358",
+        imdb_rating: 7.8,
+    },
+    {
+        title: "The Hobbit: An Unexpected Journey",
+        year: 2012,
+        franchise: "The Hobbit",
+        directors: ["Peter Jackson"],
+        writers: ["Fran Walsh", "Philippa Boyens", "Peter Jackson"],
+        actors: ["Martin Freeman", "Ian McKellen", "Richard Armitage"],
+        imdb_id: "tt0903624",
+        imdb_rating: 7.8,
+    }
+]);
+```
+
+Then perform the update on the records added (see code above), to get the following result:
+
+Screenshots:
+
+![Step 6.1 Screenshot (c) (update after insertion)](assets/step-6.1c.png)
 
 ## 6.2 Update document with an actor
 
 - Add the provided actors to the required films using one or more queries in the order provided...
 
+| **Film Title** | **Actor** |
+| --- |  --- |
+| **Pulp Fiction** | Samuel L. Jackson |
+| --- |  --- |
+| **Star Trek VI: The Undiscovered Country** | William Shatner, Leonard Nimoy, DeForest Kelley, James Doohan, Christopher Plummer |
+| **Star Trek: Nemesis** | Patrick Stewart, Jonathan Frakes, Brent Spiner, LeVar Burton, Michael Dorn, Gates McFadden, Marina Sirtis |
+| **Star Trek VI: The Undiscovered Country** | Walter Koenig, Nichelle Nichols, George Takei, Kim Cattrall, David Warner |
+
+It is probably worth noting that only one of these films is actually in the database, and so only that film will be
+updated... (I'm not inserting them this time)
+
+Also, were it not for the requirement that the actors be added in the order specified, I would have used `$addToSet` instead
+of `$push` to ensure that the result contained no duplicates.
+
 Query Solution:
 
 ```js
- db.collection_name.find();
+db.films.updateOne(
+    { title: "Pulp Fiction" },
+    { $push: { actor: "Samuel L. Jackson" }}
+);
+
+db.films.updateOne(
+    { title: "Star Trek VI: The Undiscovered Country" },
+    { 
+        $push: { 
+            $each: [
+                "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan",
+                "Christopher Plummer"
+            ]
+        }
+    },
+);
+
+db.films.updateOne(
+    { title: "Star Trek: Nemesis" },
+    { 
+        $push: { 
+            $each: [
+                "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", 
+                "Michael Dorn", "Gates McFadden", "Marina Sirtis"
+            ]
+        }
+    },
+);
+
+db.films.updateOne(
+    { title: "Star Trek VI: The Undiscovered Country" },
+    { 
+        $push: { 
+            $each: [
+                "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
+            ]
+        }
+    },
+);
 ```
 
 Screen Shot:
@@ -657,7 +769,7 @@ Performing searches on collections.
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.collection_name.find( {title: { $regex: "^T" } });
 ```
 
 Screen Shot:

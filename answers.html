@@ -763,16 +763,164 @@ To insert an image use the following syntax:
 <ul>
 <li>Using one or more queries, add the provided synopses to the indicated films.</li>
 </ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Film</strong></th>
+<th><strong>Synopsis</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>“The Hobbit: The Desolation of Smaug”</strong></td>
+<td>“The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring.”</td>
+</tr>
+<tr class="even">
+<td><strong>“The Hobbit: An Unexpected Journey”</strong></td>
+<td>“A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug.”</td>
+</tr>
+</tbody>
+</table>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>smaug <span class="op">=</span> {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">title</span><span class="op">:</span> <span class="st">"The Hobbit: The Desolation of Smaug"</span><span class="op">,</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a> <span class="dt">summary</span><span class="op">:</span> <span class="st">"The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>journey <span class="op">=</span> {</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a> <span class="dt">title</span><span class="op">:</span> <span class="st">"The Hobbit: An Unexpected Journey"</span><span class="op">,</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a> <span class="dt">summary</span><span class="op">:</span> <span class="st">"A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug."</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">const</span> update <span class="kw">of</span> [smaug<span class="op">,</span> journey]) {</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a> <span class="kw">const</span> result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>({ <span class="dt">title</span><span class="op">:</span> update<span class="op">.</span><span class="at">title</span> }<span class="op">,</span> { <span class="dt">$set</span><span class="op">:</span> { <span class="dt">summary</span><span class="op">:</span> update<span class="op">.</span><span class="at">summary</span> } })<span class="op">;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(result)<span class="op">;</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Screenshots:</p>
+<p><img src="assets/step-6.1a.png" class="img-fluid" alt="Step 6.1 Screenshot (a)"> <img src="assets/step-6.1b.png" class="img-fluid" alt="Step 6.1 Screenshot (b) (check if exists)"></p>
+<p>There really isn’t much point trying to update documents that aren’t in the database, so I’ll add them now…</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">insertMany</span>([</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> <span class="st">"The Hobbit: The Desolation of Smaug"</span><span class="op">,</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">year</span><span class="op">:</span> <span class="dv">2013</span><span class="op">,</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">franchise</span><span class="op">:</span> <span class="st">"The Hobbit"</span><span class="op">,</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">directors</span><span class="op">:</span> [<span class="st">"Peter Jackson"</span>]<span class="op">,</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">writers</span><span class="op">:</span> [</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Fran Walsh"</span><span class="op">,</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Philippa Boyens"</span><span class="op">,</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Peter Jackson"</span><span class="op">,</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Guillermo del Toro"</span><span class="op">,</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"J.R.R. Tolkien"</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        ]<span class="op">,</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">actors</span><span class="op">:</span> [<span class="st">"Ian McKellen"</span><span class="op">,</span> <span class="st">"Martin Freeman"</span><span class="op">,</span> <span class="st">"Richard Armitage"</span>]<span class="op">,</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">imdb_id</span><span class="op">:</span> <span class="st">"tt1170358"</span><span class="op">,</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">imdb_rating</span><span class="op">:</span> <span class="fl">7.8</span><span class="op">,</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> <span class="st">"The Hobbit: An Unexpected Journey"</span><span class="op">,</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">year</span><span class="op">:</span> <span class="dv">2012</span><span class="op">,</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">franchise</span><span class="op">:</span> <span class="st">"The Hobbit"</span><span class="op">,</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">directors</span><span class="op">:</span> [<span class="st">"Peter Jackson"</span>]<span class="op">,</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">writers</span><span class="op">:</span> [<span class="st">"Fran Walsh"</span><span class="op">,</span> <span class="st">"Philippa Boyens"</span><span class="op">,</span> <span class="st">"Peter Jackson"</span>]<span class="op">,</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">actors</span><span class="op">:</span> [<span class="st">"Martin Freeman"</span><span class="op">,</span> <span class="st">"Ian McKellen"</span><span class="op">,</span> <span class="st">"Richard Armitage"</span>]<span class="op">,</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">imdb_id</span><span class="op">:</span> <span class="st">"tt0903624"</span><span class="op">,</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">imdb_rating</span><span class="op">:</span> <span class="fl">7.8</span><span class="op">,</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then perform the update on the records added (see code above), to get the following result:</p>
+<p>Screenshots:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/step-6.1c.png" class="img-fluid figure-img"></p>
+<figcaption>Step 6.1 Screenshot (c) (update after insertion)</figcaption>
+</figure>
+</div>
 </section>
 <section id="update-document-with-an-actor" class="level2">
 <h2 class="anchored" data-anchor-id="update-document-with-an-actor">6.2 Update document with an actor</h2>
 <ul>
 <li>Add the provided actors to the required films using one or more queries in the order provided…</li>
 </ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Film Title</strong></th>
+<th><strong>Actor</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pulp Fiction</strong></td>
+<td>Samuel L. Jackson</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><strong>Star Trek VI: The Undiscovered Country</strong></td>
+<td>William Shatner, Leonard Nimoy, DeForest Kelley, James Doohan, Christopher Plummer</td>
+</tr>
+<tr class="even">
+<td><strong>Star Trek: Nemesis</strong></td>
+<td>Patrick Stewart, Jonathan Frakes, Brent Spiner, LeVar Burton, Michael Dorn, Gates McFadden, Marina Sirtis</td>
+</tr>
+<tr class="odd">
+<td><strong>Star Trek VI: The Undiscovered Country</strong></td>
+<td>Walter Koenig, Nichelle Nichols, George Takei, Kim Cattrall, David Warner</td>
+</tr>
+</tbody>
+</table>
+<p>It is probably worth noting that only one of these films is actually in the database, and so only that film will be updated… (I’m not inserting them this time)</p>
+<p>Also, were it not for the requirement that the actors be added in the order specified, I would have used <code>$addToSet</code> instead of <code>$push</code> to ensure that the result contained no duplicates.</p>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">title</span><span class="op">:</span> <span class="st">"Pulp Fiction"</span> }<span class="op">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$push</span><span class="op">:</span> { <span class="dt">actor</span><span class="op">:</span> <span class="st">"Samuel L. Jackson"</span> }}</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek VI: The Undiscovered Country"</span> }<span class="op">,</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    { </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">$push</span><span class="op">:</span> { </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>            <span class="dt">$each</span><span class="op">:</span> [</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"William Shatner"</span><span class="op">,</span> <span class="st">"Leonard Nimoy"</span><span class="op">,</span> <span class="st">"DeForest Kelley"</span><span class="op">,</span> <span class="st">"James Doohan"</span><span class="op">,</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Christopher Plummer"</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek: Nemesis"</span> }<span class="op">,</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    { </span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">$push</span><span class="op">:</span> { </span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>            <span class="dt">$each</span><span class="op">:</span> [</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Patrick Stewart"</span><span class="op">,</span> <span class="st">"Jonathan Frakes"</span><span class="op">,</span> <span class="st">"Brent Spiner"</span><span class="op">,</span> <span class="st">"LeVar Burton"</span><span class="op">,</span> </span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Michael Dorn"</span><span class="op">,</span> <span class="st">"Gates McFadden"</span><span class="op">,</span> <span class="st">"Marina Sirtis"</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek VI: The Undiscovered Country"</span> }<span class="op">,</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    { </span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">$push</span><span class="op">:</span> { </span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>            <span class="dt">$each</span><span class="op">:</span> [</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Walter Koenig"</span><span class="op">,</span> <span class="st">"Nichelle Nichols"</span><span class="op">,</span> <span class="st">"George Takei"</span><span class="op">,</span> <span class="st">"Kim Cattrall"</span><span class="op">,</span> <span class="st">"David Warner"</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -791,7 +939,7 @@ To insert an image use the following syntax:
 <li>Find all films with the <code>title</code> starting with “<code>T</code>”.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>( {<span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"^T"</span> } })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -806,7 +954,7 @@ To insert an image use the following syntax:
 <li>Find all films that have a <code>genre</code> that contains the letters “<code>th</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -821,7 +969,7 @@ To insert an image use the following syntax:
 <li>Find all films that have a <code>synopsis</code> that contains the word “<code>Captain</code>” and not the word “<code>Pike</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -836,7 +984,7 @@ To insert an image use the following syntax:
 <li>Find all films that have a <code>synopsis</code> that contains the word “<code>London</code>” or “<code>Brooklyn</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -851,7 +999,7 @@ To insert an image use the following syntax:
 <li>Find all films that have a synopsis that contains the words “<code>team</code>” and “<code>search</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -870,7 +1018,7 @@ To insert an image use the following syntax:
 <li>Use the title to delete the film “<code>Pee Wee Herman's Big Adventure</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -887,7 +1035,7 @@ To insert an image use the following syntax:
 <li>Then using the found ID to remove the film</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -902,7 +1050,7 @@ To insert an image use the following syntax:
 <li>Delete any films with the exact word “<code>Fictional</code>” in their title, ignoring case.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -921,18 +1069,18 @@ To insert an image use the following syntax:
 <li>Create an index on the <code>title</code> field.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Create an index on the <code>year</code> and <code>title</code> fields.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Create an index on the <code>franchise</code>, <code>title</code>, <code>actors</code>, <code>year</code> fields.</li>
 <li>The index must be in the order year, title, actors then franchise.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="indexes-for-full-text-search" class="level2">
 <h2 class="anchored" data-anchor-id="indexes-for-full-text-search">9.2 Indexes for Full Text Search</h2>
@@ -940,7 +1088,7 @@ To insert an image use the following syntax:
 <li>Create a text index on the <code>title</code> and <code>summary</code> fields.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="verifying-execution-plans" class="level2">
 <h2 class="anchored" data-anchor-id="verifying-execution-plans">9.3 Verifying Execution Plans</h2>
@@ -949,7 +1097,7 @@ To insert an image use the following syntax:
 <li>Check if the created index is being used.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -978,7 +1126,7 @@ To insert an image use the following syntax:
 <li>Write an aggregation query to count the number of <code>Star Trek</code> films.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="mean-budget-and-box-office-takings" class="level2">
 <h2 class="anchored" data-anchor-id="mean-budget-and-box-office-takings">10.2 Mean budget and box office takings…</h2>
@@ -987,7 +1135,7 @@ To insert an image use the following syntax:
 <li>Display both values.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="profit-earnings" class="level2">
 <h2 class="anchored" data-anchor-id="profit-earnings">10.3 Profit earnings</h2>
@@ -996,7 +1144,7 @@ To insert an image use the following syntax:
 <li>Films with no budget and/or no box office should NOT be included in the results.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1011,7 +1159,7 @@ To insert an image use the following syntax:
 <li>Write the query to group films by their franchise and count the number of films in each franchise.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="step-11-triggers" class="level1">
@@ -1023,7 +1171,7 @@ To insert an image use the following syntax:
 <li>Create a trigger that monitors the films collection for new data being added.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="testing-the-insert-trigger-works-correctly" class="level2">
 <h2 class="anchored" data-anchor-id="testing-the-insert-trigger-works-correctly">11.2 Testing the insert trigger works correctly</h2>
@@ -1031,7 +1179,7 @@ To insert an image use the following syntax:
 <li>Use the following data to check the trigger functions as expected:</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="create-trigger-for-updated-data" class="level2">
 <h2 class="anchored" data-anchor-id="create-trigger-for-updated-data">11.3 Create trigger for updated data</h2>
@@ -1039,7 +1187,7 @@ To insert an image use the following syntax:
 <li>Create a trigger that monitors the films collection for new data being added.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1054,7 +1202,7 @@ To insert an image use the following syntax:
 <li>Use the following data to verify that the trigger functions as expected. Make sure that these updates are completed in more than one query:</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="create-trigger-for-deleted-data" class="level2">
 <h2 class="anchored" data-anchor-id="create-trigger-for-deleted-data">11.5 Create trigger for deleted data</h2>
@@ -1062,7 +1210,7 @@ To insert an image use the following syntax:
 <li>Create a trigger that monitors the films collection for new data being added.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="testing-the-delete-trigger-works-correctly" class="level2">
 <h2 class="anchored" data-anchor-id="testing-the-delete-trigger-works-correctly">11.6 Testing the delete trigger works correctly</h2>
@@ -1070,7 +1218,7 @@ To insert an image use the following syntax:
 <li>Use the following conditions to verify that the trigger functions as expected:</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="verify-the-log-contains-data" class="level2">
 <h2 class="anchored" data-anchor-id="verify-the-log-contains-data">11.7 Verify the log contains data…</h2>
@@ -1078,7 +1226,7 @@ To insert an image use the following syntax:
 <li>Write a query to show the data in the film audit log.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
