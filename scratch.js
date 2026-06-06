@@ -388,3 +388,7 @@ db.films.deleteOne({
 result = db.films.findOne({ title: "Fictionally Fake Film" });
 db.films.deteteOne(result._id);
 
+db.films.aggregate([
+    { $match: { franchise: "Star Trek" } },
+    { $count: "$film_count" }
+])

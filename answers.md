@@ -1032,10 +1032,12 @@ In this step you will be aggregating data within a collection.
 
 Query Solution:
 
-```js
- db.films.find();
-```
-
+> ```js
+> db.films.aggregate([
+>     { $match: { franchise: "Star Trek" } },
+>     { $count: "film_count" }
+> ])
+> ```
 
 ## 10.2 Mean budget and box office takings…
 
@@ -1044,9 +1046,12 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.aggregate([
+>     { $group: { _id: null, mean_budget: { $avg: "$budget" }, mean_box_office: { $avg: "$box_office" } } },
+>     { $unset: [ "_id" ]}
+>  ]);
+> ```
 
 
 ## 10.3 Profit earnings
@@ -1056,13 +1061,17 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.aggregate([
+>     { $match: { $expr: { $and: [ { $isNumber: "$box_office" }, { $isNumber: "$budget" } ] } } }, 
+>     { $set: { profit: { $subtract: [ "$box_office", "$budget" ] } } }, 
+>     { $project: { _id: 0, title: "$title", profit: "$profit" } }
+> ])
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 3.3 Screenshot](assets/step-10.3.png)
 
 
 
@@ -1072,9 +1081,12 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.aggregate([
+>     { $group: { _id: "$franchise", count: { $sum: 1 } } },
+>     { $sort: { count: -1 }}
+>  ]);
+> ```
 
 
 
