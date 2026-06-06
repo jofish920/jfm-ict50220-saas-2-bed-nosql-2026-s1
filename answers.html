@@ -660,20 +660,22 @@ To insert an image use the following syntax:
 <li>Get all documents from the films collection.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="retrieve-all-films-written-by" class="level2">
 <h2 class="anchored" data-anchor-id="retrieve-all-films-written-by">5.2 Retrieve all films written by…</h2>
 <ul>
 <li>Get all documents with <code>writer</code> set to “<code>Quentin Tarantino</code>”</li>
 </ul>
+<p>( Yields 0 results; example from Word document “James Cameron” yields 10)</p>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({<span class="dt">writers</span><span class="op">:</span> [ <span class="st">"Quentin Tarantino"</span> ]})<span class="op">;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({<span class="dt">writers</span><span class="op">:</span> [ <span class="st">"James Cameron"</span> ]})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
-<figcaption>Step 3.3 Screenshot</figcaption>
+<p><img src="assets/step-5.2.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.2 Screenshot</figcaption>
 </figure>
 </div>
 </section>
@@ -683,15 +685,30 @@ To insert an image use the following syntax:
 <li>Get all documents where <code>actors</code> include “<code>Brad Pitt</code>”</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">actors</span><span class="op">:</span> <span class="st">"Brad Pit"</span> })<span class="op">;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">actors</span><span class="op">:</span> <span class="st">"Kate Winslet"</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/step-5.3.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.3 Screenshot</figcaption>
+</figure>
+</div>
 </section>
 <section id="retrieve-films-from-a-franchise" class="level2">
 <h2 class="anchored" data-anchor-id="retrieve-films-from-a-franchise">5.4 Retrieve films from a franchise…</h2>
 <ul>
-<li>Get all documents with <code>franchise</code> set to “<code>The Hobbit</code>”</li>
+<li>Get all documents with <code>franchise</code> set to “<code>The Hobbit</code>” (no matches in DB or import files)</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({<span class="dt">franchise</span><span class="op">:</span> [<span class="st">"The Hobbit"</span>]})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>ua <img src="assets/step-5.4.png" class="img-fluid" alt="Step 5.4 Screenshot"></p>
+<p>Just to compare, a screenshot of a franchise that actually has matching documents:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/step-5.4b.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.4 Screenshot</figcaption>
+</figure>
+</div>
 </section>
 <section id="retrieve-films-released-in-range" class="level2">
 <h2 class="anchored" data-anchor-id="retrieve-films-released-in-range">5.5 Retrieve films released in range…</h2>
@@ -699,12 +716,12 @@ To insert an image use the following syntax:
 <li>Get all films released between <code>1980</code> and <code>2020</code></li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">year</span><span class="op">:</span> {<span class="dt">$gte</span><span class="op">:</span> <span class="dv">1980</span><span class="op">,</span> <span class="dt">$lte</span><span class="op">:</span> <span class="dv">2020</span>} })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
-<figcaption>Step 3.3 Screenshot</figcaption>
+<p><img src="assets/step-5.5.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.5 Screenshot</figcaption>
 </figure>
 </div>
 </section>
@@ -714,7 +731,14 @@ To insert an image use the following syntax:
 <li>Get all films with a running time of over <code>120</code> minutes</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">collection_name</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">running_time</span><span class="op">:</span> { <span class="dt">$gt</span><span class="op">:</span> <span class="dv">120</span> }})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Screen Shot:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/step-5.6.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.6 Screenshot</figcaption>
+</figure>
+</div>
 </section>
 <section id="retrieve-films-released-in-range-1" class="level2">
 <h2 class="anchored" data-anchor-id="retrieve-films-released-in-range-1">5.7 Retrieve films released in range…</h2>
@@ -726,8 +750,8 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
-<figcaption>Step 3.3 Screenshot</figcaption>
+<p><img src="assets/step-5.7.png" class="img-fluid figure-img"></p>
+<figcaption>Step 5.7 Screenshot</figcaption>
 </figure>
 </div>
 </section>
@@ -752,7 +776,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -771,7 +795,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -786,7 +810,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -801,7 +825,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -816,7 +840,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -831,7 +855,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -850,7 +874,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -867,7 +891,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -882,7 +906,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -929,7 +953,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -976,7 +1000,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -1019,7 +1043,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>
@@ -1058,7 +1082,7 @@ To insert an image use the following syntax:
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="assets/SCREENSHOT_FILENAME_HERE.png" class="img-fluid figure-img"></p>
+<p><img src="assets/SCREENSHOT_FILENAME_HERE.svg" class="img-fluid figure-img"></p>
 <figcaption>Step 3.3 Screenshot</figcaption>
 </figure>
 </div>

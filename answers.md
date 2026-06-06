@@ -501,17 +501,13 @@ mongoimport "mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_
   film-data.json
 ```
 
-
-
 ## 4.3 Inserting Data
 
 Add the provided additional sample data into the films collection in the order provided.
 
 > You do not have to add any details to the answers.md for this question.
 
-
 # Step 5: CRUD - Retrieve Queries
-
 
 ## 5.1 Retrieve all documents
 
@@ -520,7 +516,7 @@ Add the provided additional sample data into the films collection in the order p
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find();
 ```
 
 
@@ -529,16 +525,18 @@ Query Solution:
 
 - Get all documents with `writer` set to "`Quentin Tarantino`"
 
+( Yields 0 results; example from Word document "James Cameron" yields 10)
+
 Query Solution:
 
 ```js
- db.collection_name.find();
+db.films.find({writers: [ "Quentin Tarantino" ]});
+db.films.find({writers: [ "James Cameron" ]});
 ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
-
+![Step 5.2 Screenshot](assets/step-5.2.png)
 
 
 ## 5.3 Retrieve films with actor(s)…
@@ -548,21 +546,29 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find({ actors: "Brad Pit" });
+ db.films.find({ actors: "Kate Winslet" });
 ```
 
+![Step 5.3 Screenshot](assets/step-5.3.png)
 
 
 ## 5.4 Retrieve films from a franchise…
 
-- Get all documents with `franchise` set to "`The Hobbit`"
+- Get all documents with `franchise` set to "`The Hobbit`" (no matches in DB or import files)
 
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find({franchise: ["The Hobbit"]});
 ```
 
+ua
+![Step 5.4 Screenshot](assets/step-5.4.png)
+
+Just to compare, a screenshot of a franchise that actually has matching documents:
+
+![Step 5.4 Screenshot](assets/step-5.4b.png)
 
 
 ## 5.5 Retrieve films released in range…
@@ -572,12 +578,12 @@ Query Solution:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find({ year: {$gte: 1980, $lte: 2020} });
 ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 5.5 Screenshot](assets/step-5.5.png)
 
 
 ## 5.6 Retrieve films longer than…
@@ -587,9 +593,12 @@ Screen Shot:
 Query Solution:
 
 ```js
- db.collection_name.find();
+ db.films.find({ running_time: { $gt: 120 }});
 ```
 
+Screen Shot:
+
+![Step 5.6 Screenshot](assets/step-5.6.png)
 
 ## 5.7 Retrieve films released in range…
 
@@ -603,7 +612,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 5.7 Screenshot](assets/step-5.7.png)
 
 
 
@@ -633,7 +642,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 # Step 7: CRUD – Searches
@@ -653,7 +662,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -669,7 +678,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -685,7 +694,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -701,7 +710,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -717,7 +726,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -738,7 +747,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -757,7 +766,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -773,7 +782,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -835,7 +844,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -890,7 +899,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -946,7 +955,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
@@ -997,7 +1006,7 @@ Query Solution:
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.png)
+![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
 
 
 
