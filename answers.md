@@ -938,27 +938,27 @@ Using the films collection, create the indexes to match the following conditions
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+> db.films.createIndex({ title: 1 });
+> ```
 
 
 - Create an index on the `year` and `title` fields.
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.createIndex({ year: 1, title: 1 });
+> ```
 
 - Create an index on the `franchise`, `title`, `actors`, `year` fields.
 - The index must be in the order year, title, actors then franchise.
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.createIndex({ year: 1, title: 1, actors: 1, franchise: 1 });
+> ```
 
 
 ## 9.2 Indexes for Full Text Search
@@ -967,9 +967,9 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+>  db.films.createIndex({ title: 'text', summary: 'text' });
+> ```
 
 
 ## 9.3 Verifying Execution Plans
@@ -979,13 +979,25 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> The following will make use of the text index and filter the results to ensure that "Star"
+> is contained in the title, not just the summary.
+>
+> ```js
+>  db.films.explain().find({
+>     $and: [
+>         { $text: { $search: "Star" } },
+>         { title: { $regex: /\bStar\b/ } }
+>     ]
+> })
+> ```
+>
+> According to the results of an (unquoted) explain, simply using the regex would have used the
+> title index, but I cannot see any way that it could have used that index to find a title that
+> could contain a word at any location within the string.
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 3.3 Screenshot](assets/step-9.3.png)
 
 
 
@@ -994,10 +1006,20 @@ Screen Shot:
 - Briefly explain the differences between an index for sorting against an index for full text searches.
 - Include in your answer when each is best suited for use.
 
-> ANSWER_HERE
+> A full-text search can be used to determine if a word occurs anywhere within one or more text fields within
+> a document.
+> This is something that would require a full scan through all documents containing the text field(s) being searched
+> using a regular-expression match, but the search space can be reduced using the full text index (as shown).
+> It does not impose a useful order on the results, nor does MongoDB's implementation support prefix matching.
+> In MongoDB, there is a further limitation that there can only be one full-text index per collection.
 >
+> Regular indexes support sorting of results in an order that matches the order of fields in the index.
+> They also support range queries using either the full values for the fields or a prefix[^mongo-regex-prefix].
 >
-
+> Full-text queries useful for speeding up queries that involve finding documents containing
+> one of a set of words within the fields covered by a query, a limited but important application.
+> Regular indexes are far more flexible, and can be used for a variety of purposed including range searches and
+> sorting.
 
 # Step 10: Aggregation
 
@@ -1163,6 +1185,9 @@ add url here
 # References
 
 [^laravel-13-docs]: Laravel Team. (n.d.). Documentation (Version 13.x). [Online documentation]. <https://laravel.com/docs/13.x>
+
 [^mongo-field-names]: Morgan, A (2025, Sep 3) _The Difference a (Field) Name Makes: Reduce Document Size and Increase Performance_. Blog post. <https://www.mongodb.com/company/blog/technical/difference-field-name-makes-reduce-document-size-increase-performance>
+
+[^mongo-regex-prefix]: MongoDB (n.d.) \$regex (query predicate operator).  Page in MongoDB Online Documentation. <https://www.mongodb.com/docs/manual/reference/operator/query/regex/>
 
 # END
