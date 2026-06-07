@@ -802,11 +802,11 @@ Screen Shot:
 
 ![Step 7.2a Screenshot](assets/step-7.2a.png)
 
-Screenshot showing genres that occur in the dataset:
+> Screenshot showing genres that occur in the dataset:
 
 ![Step 7.2b Screenshot](assets/step-7.2b.png)
 
-Query repeated with something that produces at least 1 result:
+> Query repeated with something that produces at least 1 result:
 
 ![Step 7.2c Screenshot](assets/step-7.2c.png)
 
@@ -1142,21 +1142,20 @@ Query Solution:
 
 Query Solution:
 
-```js
-// Insert some data now that the trigger has been added
-db.films.insertOne({
-   title: "Jeffrey", 
-   writers: ["Paul Rudnick"], 
-   year: 1995, 
-   actors: ["Sigourney Weaver", "Patrick Stewart", "Michael T. Weiss", "Steven Weber", "Bryan Batt"], 
-   box_office: 3500000, 
-   running_time: 92
-});
-
-// Show all additions to the audit log
-db.film_audit.find()
-```
-
+> ```js
+> // Insert some data now that the trigger has been added
+> db.films.insertOne({
+>    title: "Jeffrey", 
+>    writers: ["Paul Rudnick"], 
+>    year: 1995, 
+>    actors: ["Sigourney Weaver", "Patrick Stewart", "Michael T. Weiss", "Steven Weber", "Bryan Batt"], 
+>    box_office: 3500000, 
+>    running_time: 92
+> });
+> 
+> // Show all additions to the audit log
+> db.film_audit.find()
+> ```
 
 
 ## 11.3 Create trigger for updated data
@@ -1229,30 +1228,30 @@ Query Solution:
 > Given that Worthington, Saldana and Weaver account for the current list of actors, I have chosen
 > to replace the list rather than pushing new items.
 >
-
-```js
- last_update = db.film_audit.aggregate([
-   { $match: { action: "UPDATE" } }, 
-   { $group: { _id: "all", max_date: { $max: "$action_date" } } },
- ]).toArray();
- last_timestamp = last_update.length > 0 ? last_update[0].max_date : Timestamp(0, 0);
-
- result = db.films.updateOne(
-  { title: "Avatar" },
-  {
-    $set: {
-      actors: [ "Sam Worthington", "Zoe Saldana", "Stephen Lang", "Michelle Rodriguez", "Sigourney Weaver" ],
-    },
-  }
- );
-
- console.log(result);
- console.log("Waiting for audit log to update (5s)");
-
- sleep(5000);
-
- audit_entry = db.film_audit.findOne({ action: "UPDATE", action_date: { $gt: last_timestamp }})
-```
+>
+> ```js
+>  last_update = db.film_audit.aggregate([
+>    { $match: { action: "UPDATE" } }, 
+>    { $group: { _id: "all", max_date: { $max: "$action_date" } } },
+>  ]).toArray();
+>  last_timestamp = last_update.length > 0 ? last_update[0].max_date : Timestamp(0, 0);
+> 
+>  result = db.films.updateOne(
+>   { title: "Avatar" },
+>   {
+>     $set: {
+>       actors: [ "Sam Worthington", "Zoe Saldana", "Stephen Lang", "Michelle Rodriguez", "Sigourney Weaver" ],
+>     },
+>   }
+>  );
+> 
+>  console.log(result);
+>  console.log("Waiting for audit log to update (5s)");
+> 
+>  sleep(5000);
+> 
+>  audit_entry = db.film_audit.findOne({ action: "UPDATE", action_date: { $gt: last_timestamp }})
+> ```
 
 ![Step 11.4 Screenshot](assets/step-11.4.png)
 
