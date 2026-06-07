@@ -720,90 +720,43 @@ Screenshots:
 Query Solution:
 
 > ```js
->
-  updates = [
-    {
-      title: "Pulp Fiction",
-      actors: ["Samuel L. Jackson"],
-    },
-    {
-      title: "Star Trek VI: The Undiscovered Country",
-      actors: ["William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"],
-    },
-    {
-      title: "Star Trek: Nemesis",
-      actors: [
-        "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn",
-        "Gates McFadden", "Marina Sirtis",
-      ],
-    },
-    {
-      title: "Star Trek VI: The Undiscovered Country",
-      actors: [
-        "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner",
-      ],
-    },
-  ];
-
-  var format = data => "\n" + JSON.stringify(data, null, 2);
-  var reindent = text => text.replace(/\n      /g, '');
-
-  for (const update of updates) {
-    const query = { title: update.title };
-    const action = { $push: { actors: { $each: update.actors } } };
-    const result = db.films.updateOne(query, action);
-    console.log(reindent(`
-db.films.updateOne(
-        ${format(query)},
-        ${format(action)}
-      )
-      ==> ${format(result)}
-    `))
-  }
-
-> db.films.updateOne(
-> { title: "Pulp Fiction" },
-> { $push: { actor: "Samuel L. Jackson" }}
-> );
->
-> db.films.updateOne(
-> { title: "Star Trek VI: The Undiscovered Country" },
-> {
-> $push: {
->             actors: {
->                 $each: [
-> "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"
-> ]
+> updates = [
+>   {
+>     title: "Pulp Fiction",
+>     actors: ["Samuel L. Jackson"],
+>   },
+>   {
+>     title: "Star Trek VI: The Undiscovered Country",
+>     actors: ["William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"],
+>   },
+>   {
+>     title: "Star Trek: Nemesis",
+>     actors: [
+>       "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn",
+>       "Gates McFadden", "Marina Sirtis",
+>     ],
+>   },
+>   {
+>     title: "Star Trek VI: The Undiscovered Country",
+>     actors: [
+>       "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner",
+>     ],
+>   },
+> ];
+> var format = data => "\n" + JSON.stringify(data, null, 2);
+> var reindent = text => text.replace(/\n {1,6}/g, "\n");
+> for (const update of updates) {
+>   const query = { title: update.title };
+>   const action = { $push: { actors: { $each: update.actors } } };
+>   const result = db.films.updateOne(query, action);
+>   console.log(reindent(`
+>     db.films.updateOne(
+>       ${format(query)},
+>       ${format(action)}
+>     )
+>     ==> ${format(result)}
+>     `));
 > }
-> }
-> },
-> );
->
-> db.films.updateOne(
-> { title: "Star Trek: Nemesis" },
-> {
-> $push: {
->             actors: {
->                 $each: [
-> "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn",
-> "Gates McFadden", "Marina Sirtis"
-> ],
-> },
-> },
-> },
-> );
->
-> db.films.updateOne(
-> { title: "Star Trek VI: The Undiscovered Country" },
-> {
-> $push: {
->             $each: [
-> "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
-> ]
-> }
-> },
-> );
->
 > ```
 
 Screen Shot:
@@ -1372,8 +1325,6 @@ Query Solution:
 Screen Shot:
 
 ![Step 11.7 Screenshot](assets/step-11.7.png)
-
-
 
 
 # Step 12: Submission

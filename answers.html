@@ -910,17 +910,43 @@ To insert an image use the following syntax:
 </blockquote>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<p>```js</p>
-<p>updates = [ { title: “Pulp Fiction”, actors: [“Samuel L. Jackson”], }, { title: “Star Trek VI: The Undiscovered Country”, actors: [“William Shatner”, “Leonard Nimoy”, “DeForest Kelley”, “James Doohan”, “Christopher Plummer”], }, { title: “Star Trek: Nemesis”, actors: [ “Patrick Stewart”, “Jonathan Frakes”, “Brent Spiner”, “LeVar Burton”, “Michael Dorn”, “Gates McFadden”, “Marina Sirtis”,], }, { title: “Star Trek VI: The Undiscovered Country”, actors: [ “Walter Koenig”, “Nichelle Nichols”, “George Takei”, “Kim Cattrall”, “David Warner”,], },];</p>
-</blockquote>
-<p>var format = data =&gt; “” + JSON.stringify(data, null, 2); var reindent = text =&gt; text.replace(//g, ’’);</p>
-<p>for (const update of updates) { const query = { title: update.title }; const action = { $push: { actors: { $each: update.actors } } }; const result = db.films.updateOne(query, action); console.log(reindent(<code>db.films.updateOne(         ${format(query)},         ${format(action)}       )       ==&gt; ${format(result)}</code>)) }</p>
-<blockquote class="blockquote">
-<p>db.films.updateOne( { title: “Pulp Fiction” }, { $push: { actor: “Samuel L. Jackson” }} );</p>
-<p>db.films.updateOne( { title: “Star Trek VI: The Undiscovered Country” }, { $push: { actors: { $each: [ “William Shatner”, “Leonard Nimoy”, “DeForest Kelley”, “James Doohan”, “Christopher Plummer”] } } }, );</p>
-<p>db.films.updateOne( { title: “Star Trek: Nemesis” }, { $push: { actors: { $each: [ “Patrick Stewart”, “Jonathan Frakes”, “Brent Spiner”, “LeVar Burton”, “Michael Dorn”, “Gates McFadden”, “Marina Sirtis”], }, }, }, );</p>
-<p>db.films.updateOne( { title: “Star Trek VI: The Undiscovered Country” }, { $push: { $each: [ “Walter Koenig”, “Nichelle Nichols”, “George Takei”, “Kim Cattrall”, “David Warner”] } }, );</p>
-<p>```</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>updates <span class="op">=</span> [</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Pulp Fiction"</span><span class="op">,</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">actors</span><span class="op">:</span> [<span class="st">"Samuel L. Jackson"</span>]<span class="op">,</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek VI: The Undiscovered Country"</span><span class="op">,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">actors</span><span class="op">:</span> [<span class="st">"William Shatner"</span><span class="op">,</span> <span class="st">"Leonard Nimoy"</span><span class="op">,</span> <span class="st">"DeForest Kelley"</span><span class="op">,</span> <span class="st">"James Doohan"</span><span class="op">,</span> <span class="st">"Christopher Plummer"</span>]<span class="op">,</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek: Nemesis"</span><span class="op">,</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">actors</span><span class="op">:</span> [</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Patrick Stewart"</span><span class="op">,</span> <span class="st">"Jonathan Frakes"</span><span class="op">,</span> <span class="st">"Brent Spiner"</span><span class="op">,</span> <span class="st">"LeVar Burton"</span><span class="op">,</span> <span class="st">"Michael Dorn"</span><span class="op">,</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Gates McFadden"</span><span class="op">,</span> <span class="st">"Marina Sirtis"</span><span class="op">,</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Star Trek VI: The Undiscovered Country"</span><span class="op">,</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">actors</span><span class="op">:</span> [</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Walter Koenig"</span><span class="op">,</span> <span class="st">"Nichelle Nichols"</span><span class="op">,</span> <span class="st">"George Takei"</span><span class="op">,</span> <span class="st">"Kim Cattrall"</span><span class="op">,</span> <span class="st">"David Warner"</span><span class="op">,</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> format <span class="op">=</span> data <span class="kw">=&gt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span> <span class="op">+</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(data<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> reindent <span class="op">=</span> text <span class="kw">=&gt;</span> text<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\n</span><span class="ss"> </span><span class="sc">{1,6}</span><span class="ss">/g</span><span class="op">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)<span class="op">;</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">const</span> update <span class="kw">of</span> updates) {</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> query <span class="op">=</span> { <span class="dt">title</span><span class="op">:</span> update<span class="op">.</span><span class="at">title</span> }<span class="op">;</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> action <span class="op">=</span> { <span class="dt">$push</span><span class="op">:</span> { <span class="dt">actors</span><span class="op">:</span> { <span class="dt">$each</span><span class="op">:</span> update<span class="op">.</span><span class="at">actors</span> } } }<span class="op">;</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(query<span class="op">,</span> action)<span class="op">;</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">reindent</span>(<span class="vs">`</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="vs">    db.films.updateOne(</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">format</span>(query)<span class="sc">}</span><span class="vs">,</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">format</span>(action)<span class="sc">}</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="vs">    )</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a><span class="vs">    ==&gt; </span><span class="sc">${</span><span class="fu">format</span>(result)<span class="sc">}</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a><span class="vs">    `</span>))<span class="op">;</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <p><img src="assets/step-6.2a.png" class="img-fluid" alt="Step 6.2 Screenshot"> <img src="assets/step-6.2b.png" class="img-fluid" alt="Step 6.2 Screenshot"> <img src="assets/step-6.2c.png" class="img-fluid" alt="Step 6.2 Screenshot"> <img src="assets/step-6.2d.png" class="img-fluid" alt="Step 6.2 Screenshot"></p>
@@ -936,7 +962,7 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb23"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>( {<span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"^T"</span> } })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>( {<span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"^T"</span> } })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -953,7 +979,7 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb24"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">genre</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"th"</span> }})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">genre</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"th"</span> }})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -984,10 +1010,10 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb25"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({<span class="dt">$and</span><span class="op">:</span> [</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bCaptain</span><span class="sc">\\</span><span class="st">b"</span> } }<span class="op">,</span> </span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$not</span><span class="op">:</span> {<span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bPike</span><span class="sc">\\</span><span class="st">b"</span> } } }</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({<span class="dt">$and</span><span class="op">:</span> [</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bCaptain</span><span class="sc">\\</span><span class="st">b"</span> } }<span class="op">,</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$not</span><span class="op">:</span> {<span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bPike</span><span class="sc">\\</span><span class="st">b"</span> } } }</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(annoyingly, it is apparently possible to use “$and” on predicate-expressions when using aggregation but not search)</p>
 </blockquote>
 <p>Screen Shot:</p>
@@ -1005,13 +1031,13 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">b(?:London|Brooklyn)</span><span class="sc">\\</span><span class="st">b "</span>} })<span class="op">;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="co">// Or, no more efficiently:</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$or</span><span class="op">:</span> [{ <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bLondon</span><span class="sc">\\</span><span class="st">b "</span>} }<span class="op">,</span> { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bBrooklyn</span><span class="sc">\\</span><span class="st">b "</span>} }]</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">b(?:London|Brooklyn)</span><span class="sc">\\</span><span class="st">b "</span>} })<span class="op">;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a> <span class="co">// Or, no more efficiently:</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$or</span><span class="op">:</span> [{ <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bLondon</span><span class="sc">\\</span><span class="st">b "</span>} }<span class="op">,</span> { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bBrooklyn</span><span class="sc">\\</span><span class="st">b "</span>} }]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1028,7 +1054,7 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">$and</span><span class="op">:</span> [ { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bteam</span><span class="sc">\\</span><span class="st">b"</span> } }<span class="op">,</span> { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bsearch</span><span class="sc">\\</span><span class="st">b"</span> } } ]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>({ <span class="dt">$and</span><span class="op">:</span> [ { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bteam</span><span class="sc">\\</span><span class="st">b"</span> } }<span class="op">,</span> { <span class="dt">summary</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bsearch</span><span class="sc">\\</span><span class="st">b"</span> } } ]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1049,11 +1075,11 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb28"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Could use either deleteOne or deleteMany</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteOne</span>({</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Pee Wee Herman's Big Adventure"</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a> })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Could use either deleteOne or deleteMany</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteOne</span>({</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> <span class="st">"Pee Wee Herman's Big Adventure"</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a> })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1072,8 +1098,8 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb29"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">"Fictionally Fake Film"</span>})</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deteteOne</span>(result<span class="op">.</span><span class="at">_id</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">"Fictionally Fake Film"</span>})</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deteteOne</span>(result<span class="op">.</span><span class="at">_id</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1089,9 +1115,9 @@ To insert an image use the following syntax:
 <li>Delete any films with the exact word “<code>Fictional</code>” in their title, ignoring case.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteMany</span>({</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">fictional</span><span class="sc">\b</span><span class="ss">/</span><span class="op">,</span> <span class="dt">$options</span><span class="op">:</span> <span class="st">"i"</span> }</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteMany</span>({</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">fictional</span><span class="sc">\b</span><span class="ss">/</span><span class="op">,</span> <span class="dt">$options</span><span class="op">:</span> <span class="st">"i"</span> }</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1111,14 +1137,14 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb31"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <ul>
 <li>Create an index on the <code>year</code> and <code>title</code> fields.</li>
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb32"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">year</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">year</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <ul>
 <li>Create an index on the <code>franchise</code>, <code>title</code>, <code>actors</code>, <code>year</code> fields.</li>
@@ -1126,7 +1152,7 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb33"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">year</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">actors</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">franchise</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">year</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">actors</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">franchise</span><span class="op">:</span> <span class="dv">1</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="indexes-for-full-text-search" class="level2">
@@ -1136,7 +1162,7 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb34"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">'text'</span><span class="op">,</span> <span class="dt">summary</span><span class="op">:</span> <span class="st">'text'</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">createIndex</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">'text'</span><span class="op">,</span> <span class="dt">summary</span><span class="op">:</span> <span class="st">'text'</span> })<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="verifying-execution-plans" class="level2">
@@ -1148,14 +1174,14 @@ To insert an image use the following syntax:
 <p>Query Solution:</p>
 <blockquote class="blockquote">
 <p>The following will make use of the text index and filter the results to ensure that “Star” is contained in the title, not just the summary (the use of “executionStats” verbosity is suggested by Done (2023)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>)</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>criteriaStar1 <span class="op">=</span> { <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">Star</span><span class="sc">\b</span><span class="ss">/</span> } }<span class="op">;</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>criteriaStar2 <span class="op">=</span> {</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$and</span><span class="op">:</span> [</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">$text</span><span class="op">:</span> { <span class="dt">$search</span><span class="op">:</span> <span class="st">"Star"</span> } }<span class="op">,</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        criteriaStar1</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">explain</span>(<span class="st">"executionStats"</span>)<span class="op">.</span><span class="fu">find</span>(criteriaStar2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>criteriaStar1 <span class="op">=</span> { <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">Star</span><span class="sc">\b</span><span class="ss">/</span> } }<span class="op">;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>criteriaStar2 <span class="op">=</span> {</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$and</span><span class="op">:</span> [</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">$text</span><span class="op">:</span> { <span class="dt">$search</span><span class="op">:</span> <span class="st">"Star"</span> } }<span class="op">,</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>        criteriaStar1</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">explain</span>(<span class="st">"executionStats"</span>)<span class="op">.</span><span class="fu">find</span>(criteriaStar2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>According to the results of another explain (<code>db.films.explain("executionStats").find(criteriaStar1)</code>), using the regex alone would still result in all titles being scanned, but only examine the index keys and not the documents. In some contexts, this could represent a considerable saving in the amount of data being processed, but likely not as much as reducing the number of titles examined using the full text search index.</p>
 </blockquote>
 <p>Screen Shot:</p>
@@ -1201,10 +1227,10 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb36"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">franchise</span><span class="op">:</span> <span class="st">"Star Trek"</span> } }<span class="op">,</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$count</span><span class="op">:</span> <span class="st">"film_count"</span> }</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">franchise</span><span class="op">:</span> <span class="st">"Star Trek"</span> } }<span class="op">,</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$count</span><span class="op">:</span> <span class="st">"film_count"</span> }</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="mean-budget-and-box-office-takings" class="level2">
@@ -1215,10 +1241,10 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span> <span class="dt">mean_budget</span><span class="op">:</span> { <span class="dt">$avg</span><span class="op">:</span> <span class="st">"$budget"</span> }<span class="op">,</span> <span class="dt">mean_box_office</span><span class="op">:</span> { <span class="dt">$avg</span><span class="op">:</span> <span class="st">"$box_office"</span> } } }<span class="op">,</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$unset</span><span class="op">:</span> [ <span class="st">"_id"</span> ]}</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span> <span class="dt">mean_budget</span><span class="op">:</span> { <span class="dt">$avg</span><span class="op">:</span> <span class="st">"$budget"</span> }<span class="op">,</span> <span class="dt">mean_box_office</span><span class="op">:</span> { <span class="dt">$avg</span><span class="op">:</span> <span class="st">"$box_office"</span> } } }<span class="op">,</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$unset</span><span class="op">:</span> [ <span class="st">"_id"</span> ]}</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="profit-earnings" class="level2">
@@ -1229,11 +1255,11 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb38"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">$expr</span><span class="op">:</span> { <span class="dt">$and</span><span class="op">:</span> [ { <span class="dt">$isNumber</span><span class="op">:</span> <span class="st">"$box_office"</span> }<span class="op">,</span> { <span class="dt">$isNumber</span><span class="op">:</span> <span class="st">"$budget"</span> } ] } } }<span class="op">,</span> </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$set</span><span class="op">:</span> { <span class="dt">profit</span><span class="op">:</span> { <span class="dt">$subtract</span><span class="op">:</span> [ <span class="st">"$box_office"</span><span class="op">,</span> <span class="st">"$budget"</span> ] } } }<span class="op">,</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$project</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="st">"$title"</span><span class="op">,</span> <span class="dt">profit</span><span class="op">:</span> <span class="st">"$profit"</span> } }</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">$expr</span><span class="op">:</span> { <span class="dt">$and</span><span class="op">:</span> [ { <span class="dt">$isNumber</span><span class="op">:</span> <span class="st">"$box_office"</span> }<span class="op">,</span> { <span class="dt">$isNumber</span><span class="op">:</span> <span class="st">"$budget"</span> } ] } } }<span class="op">,</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$set</span><span class="op">:</span> { <span class="dt">profit</span><span class="op">:</span> { <span class="dt">$subtract</span><span class="op">:</span> [ <span class="st">"$box_office"</span><span class="op">,</span> <span class="st">"$budget"</span> ] } } }<span class="op">,</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$project</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="st">"$title"</span><span class="op">,</span> <span class="dt">profit</span><span class="op">:</span> <span class="st">"$profit"</span> } }</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1250,10 +1276,10 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb39"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"$franchise"</span><span class="op">,</span> <span class="dt">count</span><span class="op">:</span> { <span class="dt">$sum</span><span class="op">:</span> <span class="dv">1</span> } } }<span class="op">,</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$sort</span><span class="op">:</span> { <span class="dt">count</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span> }}</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"$franchise"</span><span class="op">,</span> <span class="dt">count</span><span class="op">:</span> { <span class="dt">$sum</span><span class="op">:</span> <span class="dv">1</span> } } }<span class="op">,</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">$sort</span><span class="op">:</span> { <span class="dt">count</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span> }}</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 </section>
@@ -1267,30 +1293,30 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb40"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">// This code is adapted from the default function provided when creating a trigger.</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> changeEvent<span class="op">.</span><span class="at">ns</span><span class="op">.</span><span class="at">db</span><span class="op">;</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> database <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">;</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> database<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents</span></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// The event should always be "insert" for this trigger, but check anyway.</span></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"insert"</span>) {</span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"INSERT"</span><span class="op">,</span></span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocument</span><span class="op">,</span></span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
-<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">// This code is adapted from the default function provided when creating a trigger.</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> changeEvent<span class="op">.</span><span class="at">ns</span><span class="op">.</span><span class="at">db</span><span class="op">;</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> database <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">;</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> database<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// The event should always be "insert" for this trigger, but check anyway.</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"insert"</span>) {</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"INSERT"</span><span class="op">,</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocument</span><span class="op">,</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="testing-the-insert-trigger-works-correctly" class="level2">
@@ -1299,18 +1325,18 @@ To insert an image use the following syntax:
 <li>Use the following data to check the trigger functions as expected:</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Insert some data now that the trigger has been added</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">insertOne</span>({</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>   <span class="dt">title</span><span class="op">:</span> <span class="st">"Jeffrey"</span><span class="op">,</span> </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>   <span class="dt">writers</span><span class="op">:</span> [<span class="st">"Paul Rudnick"</span>]<span class="op">,</span> </span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>   <span class="dt">year</span><span class="op">:</span> <span class="dv">1995</span><span class="op">,</span> </span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">actors</span><span class="op">:</span> [<span class="st">"Sigourney Weaver"</span><span class="op">,</span> <span class="st">"Patrick Stewart"</span><span class="op">,</span> <span class="st">"Michael T. Weiss"</span><span class="op">,</span> <span class="st">"Steven Weber"</span><span class="op">,</span> <span class="st">"Bryan Batt"</span>]<span class="op">,</span> </span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>   <span class="dt">box_office</span><span class="op">:</span> <span class="dv">3500000</span><span class="op">,</span> </span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>   <span class="dt">running_time</span><span class="op">:</span> <span class="dv">92</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Show all additions to the audit log</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">find</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Insert some data now that the trigger has been added</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">insertOne</span>({</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>   <span class="dt">title</span><span class="op">:</span> <span class="st">"Jeffrey"</span><span class="op">,</span> </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>   <span class="dt">writers</span><span class="op">:</span> [<span class="st">"Paul Rudnick"</span>]<span class="op">,</span> </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>   <span class="dt">year</span><span class="op">:</span> <span class="dv">1995</span><span class="op">,</span> </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">actors</span><span class="op">:</span> [<span class="st">"Sigourney Weaver"</span><span class="op">,</span> <span class="st">"Patrick Stewart"</span><span class="op">,</span> <span class="st">"Michael T. Weiss"</span><span class="op">,</span> <span class="st">"Steven Weber"</span><span class="op">,</span> <span class="st">"Bryan Batt"</span>]<span class="op">,</span> </span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>   <span class="dt">box_office</span><span class="op">:</span> <span class="dv">3500000</span><span class="op">,</span> </span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>   <span class="dt">running_time</span><span class="op">:</span> <span class="dv">92</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Show all additions to the audit log</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">find</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="create-trigger-for-updated-data" class="level2">
 <h2 class="anchored" data-anchor-id="create-trigger-for-updated-data">11.3 Create trigger for updated data</h2>
@@ -1320,31 +1346,31 @@ To insert an image use the following syntax:
 <p>Query Solution:</p>
 <blockquote class="blockquote">
 <p>Note that this handles update operations, not replace.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span><span class="co">// This code is adapted from the default function provided when creating a trigger.</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> changeEvent<span class="op">.</span><span class="at">ns</span><span class="op">.</span><span class="at">db</span><span class="op">;</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> database <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">;</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> database<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// The event should always be "insert" for this trigger, but check anyway.</span></span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"update"</span>) {</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span><span class="op">,</span></span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocumentBeforeChange</span><span class="op">,</span></span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocument</span><span class="op">,</span></span>
-<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
-<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
-<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
-<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span><span class="co">// This code is adapted from the default function provided when creating a trigger.</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> changeEvent<span class="op">.</span><span class="at">ns</span><span class="op">.</span><span class="at">db</span><span class="op">;</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> database <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">;</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> database<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// The event should always be "insert" for this trigger, but check anyway.</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"update"</span>) {</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span><span class="op">,</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocumentBeforeChange</span><span class="op">,</span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocument</span><span class="op">,</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 <p>Screen Shot:</p>
 <p><img src="assets/step-11.2a.png" class="img-fluid" alt="Step 11.2a Screenshot"> <img src="assets/step-11.2b.png" class="img-fluid" alt="Step 11.2b Screenshot"></p>
@@ -1388,27 +1414,27 @@ To insert an image use the following syntax:
 <p>My first attempt at setting up the trigger failed due to me putting in the wrong cluster name, but the data was already updated top match what was required from update 1. The solution that I adopted was to change the franchise to “Avatar!” before testing, to make sure that the before and after documents really were different.</p>
 <p>Given that Worthington, Saldana and Weaver account for the current list of actors, I have chosen to replace the list rather than pushing new items.</p>
 </blockquote>
-<div class="sourceCode" id="cb43"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a> last_update <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span> } }<span class="op">,</span> </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"all"</span><span class="op">,</span> <span class="dt">max_date</span><span class="op">:</span> { <span class="dt">$max</span><span class="op">:</span> <span class="st">"$action_date"</span> } } }<span class="op">,</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">.</span><span class="fu">toArray</span>()<span class="op">;</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a> last_timestamp <span class="op">=</span> last_update<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> last_update[<span class="dv">0</span>]<span class="op">.</span><span class="at">max_date</span> <span class="op">:</span> <span class="fu">Timestamp</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a> result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">title</span><span class="op">:</span> <span class="st">"Avatar"</span> }<span class="op">,</span></span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$set</span><span class="op">:</span> {</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">actors</span><span class="op">:</span> [ <span class="st">"Sam Worthington"</span><span class="op">,</span> <span class="st">"Zoe Saldana"</span><span class="op">,</span> <span class="st">"Stephen Lang"</span><span class="op">,</span> <span class="st">"Michelle Rodriguez"</span><span class="op">,</span> <span class="st">"Sigourney Weaver"</span> ]<span class="op">,</span></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a> )<span class="op">;</span></span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(result)<span class="op">;</span></span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Waiting for audit log to update (5s)"</span>)<span class="op">;</span></span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">5000</span>)<span class="op">;</span></span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a> audit_entry <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span><span class="op">,</span> <span class="dt">action_date</span><span class="op">:</span> { <span class="dt">$gt</span><span class="op">:</span> last_timestamp }})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a> last_update <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span> } }<span class="op">,</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"all"</span><span class="op">,</span> <span class="dt">max_date</span><span class="op">:</span> { <span class="dt">$max</span><span class="op">:</span> <span class="st">"$action_date"</span> } } }<span class="op">,</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a> ])<span class="op">.</span><span class="fu">toArray</span>()<span class="op">;</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a> last_timestamp <span class="op">=</span> last_update<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> last_update[<span class="dv">0</span>]<span class="op">.</span><span class="at">max_date</span> <span class="op">:</span> <span class="fu">Timestamp</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a> result <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">updateOne</span>(</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">title</span><span class="op">:</span> <span class="st">"Avatar"</span> }<span class="op">,</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">$set</span><span class="op">:</span> {</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">actors</span><span class="op">:</span> [ <span class="st">"Sam Worthington"</span><span class="op">,</span> <span class="st">"Zoe Saldana"</span><span class="op">,</span> <span class="st">"Stephen Lang"</span><span class="op">,</span> <span class="st">"Michelle Rodriguez"</span><span class="op">,</span> <span class="st">"Sigourney Weaver"</span> ]<span class="op">,</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a> )<span class="op">;</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(result)<span class="op">;</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Waiting for audit log to update (5s)"</span>)<span class="op">;</span></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">5000</span>)<span class="op">;</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a> audit_entry <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">action</span><span class="op">:</span> <span class="st">"UPDATE"</span><span class="op">,</span> <span class="dt">action_date</span><span class="op">:</span> { <span class="dt">$gt</span><span class="op">:</span> last_timestamp }})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="assets/step-11.4.png" class="img-fluid figure-img"></p>
@@ -1423,25 +1449,25 @@ To insert an image use the following syntax:
 </ul>
 <p>Query Solution:</p>
 <blockquote class="blockquote">
-<div class="sourceCode" id="cb44"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ChangeEvents: https://www.mongodb.com/docs/manual/reference/change-events</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> <span class="st">"saas_bed_portfolio_2026s1"</span><span class="op">;</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"delete"</span>) {</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span><span class="op">,</span></span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocumentBeforeChange</span><span class="op">,</span></span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
-<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>exports <span class="op">=</span> <span class="kw">async</span> <span class="kw">function</span>(changeEvent) {</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ChangeEvents: https://www.mongodb.com/docs/manual/reference/change-events</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> serviceName <span class="op">=</span> <span class="st">"JFM-SaaS-NoSQL"</span><span class="op">;</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> databaseName <span class="op">=</span> <span class="st">"saas_bed_portfolio_2026s1"</span><span class="op">;</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> audit <span class="op">=</span> context<span class="op">.</span><span class="at">services</span><span class="op">.</span><span class="fu">get</span>(serviceName)<span class="op">.</span><span class="fu">db</span>(databaseName)<span class="op">.</span><span class="fu">collection</span>(<span class="st">"film_audit"</span>)<span class="op">;</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (changeEvent<span class="op">.</span><span class="at">operationType</span> <span class="op">===</span> <span class="st">"delete"</span>) {</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> audit<span class="op">.</span><span class="fu">insertOne</span>({</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span><span class="op">,</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">action_date</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">clusterTime</span><span class="op">,</span> <span class="co">// better to use wallTime?</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">original_data</span><span class="op">:</span> changeEvent<span class="op">.</span><span class="at">fullDocumentBeforeChange</span><span class="op">,</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span>(err) {</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"error performing mongodb write: "</span><span class="op">,</span> err<span class="op">.</span><span class="at">message</span>)<span class="op">;</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </blockquote>
 </section>
 <section id="testing-the-delete-trigger-works-correctly" class="level2">
@@ -1450,23 +1476,23 @@ To insert an image use the following syntax:
 <li>Use the following conditions to verify that the trigger functions as expected:</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">insertOne</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">"A Real Dummy"</span> })<span class="op">;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">1000</span>)<span class="op">;</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a> last_delete <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span> } }<span class="op">,</span> </span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"all"</span><span class="op">,</span> <span class="dt">max_date</span><span class="op">:</span> { <span class="dt">$max</span><span class="op">:</span> <span class="st">"$action_date"</span> } } }<span class="op">,</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a> ])<span class="op">.</span><span class="fu">toArray</span>()<span class="op">;</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a> last_timestamp <span class="op">=</span> last_delete<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> last_delete[<span class="dv">0</span>]<span class="op">.</span><span class="at">max_date</span> <span class="op">:</span> <span class="fu">Timestamp</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a> response <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteMany</span>({ <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">Dummy</span><span class="sc">\b</span><span class="ss">/</span> } })<span class="op">;</span></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(response)<span class="op">;</span></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Waiting for audit log to update (5s)"</span>)<span class="op">;</span></span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">2000</span>)<span class="op">;</span></span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a> audit_entry <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span><span class="op">,</span> <span class="dt">action_date</span><span class="op">:</span> { <span class="dt">$gt</span><span class="op">:</span> last_timestamp }})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">insertOne</span>({ <span class="dt">title</span><span class="op">:</span> <span class="st">"A Real Dummy"</span> })<span class="op">;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">1000</span>)<span class="op">;</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a> last_delete <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">aggregate</span>([</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$match</span><span class="op">:</span> { <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span> } }<span class="op">,</span> </span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>   { <span class="dt">$group</span><span class="op">:</span> { <span class="dt">_id</span><span class="op">:</span> <span class="st">"all"</span><span class="op">,</span> <span class="dt">max_date</span><span class="op">:</span> { <span class="dt">$max</span><span class="op">:</span> <span class="st">"$action_date"</span> } } }<span class="op">,</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a> ])<span class="op">.</span><span class="fu">toArray</span>()<span class="op">;</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a> last_timestamp <span class="op">=</span> last_delete<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> last_delete[<span class="dv">0</span>]<span class="op">.</span><span class="at">max_date</span> <span class="op">:</span> <span class="fu">Timestamp</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a> response <span class="op">=</span> db<span class="op">.</span><span class="at">films</span><span class="op">.</span><span class="fu">deleteMany</span>({ <span class="dt">title</span><span class="op">:</span> { <span class="dt">$regex</span><span class="op">:</span> <span class="ss">/</span><span class="sc">\b</span><span class="ss">Dummy</span><span class="sc">\b</span><span class="ss">/</span> } })<span class="op">;</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(response)<span class="op">;</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Waiting for audit log to update (5s)"</span>)<span class="op">;</span></span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a> <span class="fu">sleep</span>(<span class="dv">2000</span>)<span class="op">;</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a> audit_entry <span class="op">=</span> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">findOne</span>({ <span class="dt">action</span><span class="op">:</span> <span class="st">"DELETE"</span><span class="op">,</span> <span class="dt">action_date</span><span class="op">:</span> { <span class="dt">$gt</span><span class="op">:</span> last_timestamp }})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="verify-the-log-contains-data" class="level2">
 <h2 class="anchored" data-anchor-id="verify-the-log-contains-data">11.7 Verify the log contains data…</h2>
@@ -1474,7 +1500,7 @@ To insert an image use the following syntax:
 <li>Write a query to show the data in the film audit log.</li>
 </ul>
 <p>Query Solution:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a> db<span class="op">.</span><span class="at">film_audit</span><span class="op">.</span><span class="fu">find</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Screen Shot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

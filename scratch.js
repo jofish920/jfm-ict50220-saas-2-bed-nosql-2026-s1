@@ -91,7 +91,7 @@ db.films.insertMany([
         title: "Pride",
         year: 2014,
         writers: ["Stephen Beesform"],
-        franchise: [],
+        franchise: '',
         running_time: 192,
         imdb_rating: 7.8,
     },
