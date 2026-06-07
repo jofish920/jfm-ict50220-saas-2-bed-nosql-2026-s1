@@ -334,9 +334,9 @@ Add the Connection String used to connect to your MongoDB Atlas instance:
 
 - Create and use a database named `saas_bed_portfolio_2025s2`.
 
-Note: this should not actually be necessary, because I used the name of the database
-in the connection string.
-
+> Note: this should not actually be necessary, because I used the name of the database
+> in the connection string.
+>
 > ```js
 >  use('saas_bed_portfolio_2026s1')
 > ```
@@ -493,13 +493,23 @@ What was the complete command you used to perform the import of the provided sam
 
 Query Solution:
 
-```bash
-mongoimport "mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_portfolio_2026s1"\
-  --password="$MONGOPASS_20089460"\
-  --collection=films\
-  --jsonArray\
-  film-data.json
-```
+> ```bash
+> mongoimport "mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_portfolio_2026s1"\
+>   --password="$MONGOPASS_20089460"\
+>   --collection=films\
+>   --jsonArray\
+>   film-data.json
+> ```
+>
+> And, to fix problems encountered in the first pass:
+>
+> ```js
+> mongoimport "mongodb+srv://20089460@jfm-saas-nosql.p14gskf.mongodb.net/saas_bed_portfolio_2026s1"\
+>   --password="$MONGOPASS_20089460"\
+>   --collection=films\
+>   --jsonArray\
+>   additional-films.json
+> ```
 
 ## 4.3 Inserting Data
 
@@ -515,10 +525,10 @@ Add the provided additional sample data into the films collection in the order p
 
 Query Solution:
 
-```js
- db.films.find();
-```
-
+> ```js
+>  db.films.find();
+> ```
+>
 
 
 ## 5.2 Retrieve all films written by…
@@ -529,10 +539,10 @@ Query Solution:
 
 Query Solution:
 
-```js
-db.films.find({writers: [ "Quentin Tarantino" ]});
-db.films.find({writers: [ "James Cameron" ]});
-```
+> ```js
+> db.films.find({writers: [ "Quentin Tarantino" ]});
+> db.films.find({writers: [ "James Cameron" ]});
+> ```
 
 Screen Shot:
 
@@ -545,10 +555,10 @@ Screen Shot:
 
 Query Solution:
 
-```js
- db.films.find({ actors: "Brad Pit" });
- db.films.find({ actors: "Kate Winslet" });
-```
+> ```js
+>  db.films.find({ actors: "Brad Pit" });
+>  db.films.find({ actors: "Kate Winslet" });
+> ```
 
 ![Step 5.3 Screenshot](assets/step-5.3.png)
 
@@ -651,8 +661,10 @@ Screenshots:
 ![Step 6.1 Screenshot (a)](assets/step-6.1a.png)
 ![Step 6.1 Screenshot (b) (check if exists)](assets/step-6.1b.png)
 
-There really isn't much point trying to update documents that aren't in the database, so I'll add them now...
-
+> Unfortunately, I forgot about the teams post with the additional films.
+> The screenshots currently reflect the state of the collection without the additional documents
+> posted on Teams, but with the following documents added manually (FIX LATER):
+>
 > ```js
 > db.films.insertMany([
 >     {
@@ -683,8 +695,8 @@ There really isn't much point trying to update documents that aren't in the data
 >     }
 > ]);
 > ```
-
-Then perform the update on the records added (see code above), to get the following result:
+>
+> Then perform the update on the records added (see code above), to get the result:
 
 Screenshots:
 
@@ -702,57 +714,96 @@ Screenshots:
 | **Star Trek: Nemesis** | Patrick Stewart, Jonathan Frakes, Brent Spiner, LeVar Burton, Michael Dorn, Gates McFadden, Marina Sirtis |
 | **Star Trek VI: The Undiscovered Country** | Walter Koenig, Nichelle Nichols, George Takei, Kim Cattrall, David Warner |
 
-It is probably worth noting that only one of these films is actually in the database, and so only that film will be
-updated... (this can be seen from the update count in the screenshots)
-
-Also, were it not for the requirement that the actors be added in the order specified, I would have used `$addToSet` instead
-of `$push` to ensure that the result contained no duplicates.
+> Were it not for the requirement that the actors be added in the order specified, I would have used `$addToSet` instead
+> of `$push` to ensure that the result contained no duplicates.
 
 Query Solution:
 
 > ```js
+>
+  updates = [
+    {
+      title: "Pulp Fiction",
+      actors: ["Samuel L. Jackson"],
+    },
+    {
+      title: "Star Trek VI: The Undiscovered Country",
+      actors: ["William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"],
+    },
+    {
+      title: "Star Trek: Nemesis",
+      actors: [
+        "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn",
+        "Gates McFadden", "Marina Sirtis",
+      ],
+    },
+    {
+      title: "Star Trek VI: The Undiscovered Country",
+      actors: [
+        "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner",
+      ],
+    },
+  ];
+
+  var format = data => "\n" + JSON.stringify(data, null, 2);
+  var reindent = text => text.replace(/\n      /g, '');
+
+  for (const update of updates) {
+    const query = { title: update.title };
+    const action = { $push: { actors: { $each: update.actors } } };
+    const result = db.films.updateOne(query, action);
+    console.log(reindent(`
+db.films.updateOne(
+        ${format(query)},
+        ${format(action)}
+      )
+      ==> ${format(result)}
+    `))
+  }
+
 > db.films.updateOne(
->     { title: "Pulp Fiction" },
->     { $push: { actor: "Samuel L. Jackson" }}
+> { title: "Pulp Fiction" },
+> { $push: { actor: "Samuel L. Jackson" }}
 > );
-> 
+>
 > db.films.updateOne(
->     { title: "Star Trek VI: The Undiscovered Country" },
->     { 
->         $push: {
+> { title: "Star Trek VI: The Undiscovered Country" },
+> {
+> $push: {
 >             actors: {
 >                 $each: [
->                     "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"
->                 ]
->             }
->         }
->     },
+> "William Shatner", "Leonard Nimoy", "DeForest Kelley", "James Doohan", "Christopher Plummer"
+> ]
+> }
+> }
+> },
 > );
-> 
+>
 > db.films.updateOne(
->     { title: "Star Trek: Nemesis" },
->     {
->         $push: {
+> { title: "Star Trek: Nemesis" },
+> {
+> $push: {
 >             actors: {
 >                 $each: [
->                     "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn", 
->                     "Gates McFadden", "Marina Sirtis"
->                 ],
->             },
->         },
->     },
+> "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", "LeVar Burton", "Michael Dorn",
+> "Gates McFadden", "Marina Sirtis"
+> ],
+> },
+> },
+> },
 > );
-> 
+>
 > db.films.updateOne(
->     { title: "Star Trek VI: The Undiscovered Country" },
->     { 
->         $push: { 
+> { title: "Star Trek VI: The Undiscovered Country" },
+> {
+> $push: {
 >             $each: [
->                 "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
->             ]
->         }
->     },
+> "Walter Koenig", "Nichelle Nichols", "George Takei", "Kim Cattrall", "David Warner"
+> ]
+> }
+> },
 > );
+>
 > ```
 
 Screen Shot:
@@ -820,8 +871,8 @@ Query Solution:
 >     { summary: { $not: {$regex: "\\bPike\\b" } } }
 > ]})
 > ```
-
-(annoyingly, it is apparently possible to use "$and" on predicate-expressions when using aggregation but not search)
+>
+> (annoyingly, it is apparently possible to use "$and" on predicate-expressions when using aggregation but not search)
 
 Screen Shot:
 
@@ -980,26 +1031,29 @@ Query Solution:
 Query Solution:
 
 > The following will make use of the text index and filter the results to ensure that "Star"
-> is contained in the title, not just the summary.
+> is contained in the title, not just the summary (the use of "executionStats" verbosity is
+> suggested by Done (2023)[^done-2023])
 >
 > ```js
->  db.films.explain().find({
+> criteriaStar1 = { title: { $regex: /\bStar\b/ } };
+> criteriaStar2 = {
 >     $and: [
 >         { $text: { $search: "Star" } },
->         { title: { $regex: /\bStar\b/ } }
+>         criteriaStar1
 >     ]
-> })
+> };
+>  db.films.explain("executionStats").find(criteriaStar2)
 > ```
 >
-> According to the results of an (unquoted) explain, simply using the regex would have used the
-> title index, but I cannot see any way that it could have used that index to find a title that
-> could contain a word at any location within the string.
+> According to the results of another explain (`db.films.explain("executionStats").find(criteriaStar1)`), using
+> the regex alone would still result in all titles being scanned, but only examine the index keys
+> and not the documents.
+> In some contexts, this could represent a considerable saving in the amount of data being processed,
+> but likely not as much as reducing the number of titles examined using the full text search index.
 
 Screen Shot:
 
 ![Step 3.3 Screenshot](assets/step-9.3.png)
-
-
 
 ## 9.4 Differences in Indexes
 
@@ -1100,10 +1154,33 @@ Using the films collection, we are now going to create triggers to provide an au
 
 Query Solution:
 
-```js
- db.films.find();
-```
-
+> ```js
+> // This code is adapted from the default function provided when creating a trigger.
+> 
+> exports = async function(changeEvent) {
+>   // Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/
+>   
+>   const serviceName = "JFM-SaaS-NoSQL";
+>   const databaseName = changeEvent.ns.db;
+>   const database = context.services.get(serviceName).db(databaseName);
+>   const audit = database.collection("film_audit");
+> 
+>   // Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents
+>   try {
+>     // The event should always be "insert" for this trigger, but check anyway.
+>     if (changeEvent.operationType === "insert") {
+>       await audit.insertOne({
+>         action: "INSERT",
+>         action_date: changeEvent.clusterTime, // better to use wallTime?
+>         original_data: changeEvent.fullDocument,
+>       });
+>     }
+>   } catch(err) {
+>     console.log("error performing mongodb write: ", err.message);
+>   }
+> };
+> 
+> ```
 
 
 ## 11.2 Testing the insert trigger works correctly
@@ -1113,7 +1190,18 @@ Query Solution:
 Query Solution:
 
 ```js
- db.films.find();
+// Insert some data now that the trigger has been added
+db.films.insertOne({
+   title: "Jeffrey", 
+   writers: ["Paul Rudnick"], 
+   year: 1995, 
+   actors: ["Sigourney Weaver", "Patrick Stewart", "Michael T. Weiss", "Steven Weber", "Bryan Batt"], 
+   box_office: 3500000, 
+   running_time: 92
+});
+
+// Show all additions to the audit log
+db.film_audit.find()
 ```
 
 
@@ -1124,13 +1212,40 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> Note that this handles update operations, not replace.
+>
+> ```js
+>  db.films.find();// This code is adapted from the default function provided when creating a trigger.
+> 
+> exports = async function(changeEvent) {
+>   // Documentation on ChangeEvents: https://docs.mongodb.com/manual/reference/change-events/
+>   
+>   const serviceName = "JFM-SaaS-NoSQL";
+>   const databaseName = changeEvent.ns.db;
+>   const database = context.services.get(serviceName).db(databaseName);
+>   const audit = database.collection("film_audit");
+> 
+>   // Get the "FullDocument" present in the Insert/Replace/Update ChangeEvents
+>   try {
+>     // The event should always be "insert" for this trigger, but check anyway.
+>     if (changeEvent.operationType === "update") {
+>       await audit.insertOne({
+>         action: "UPDATE",
+>         action_date: changeEvent.clusterTime, // better to use wallTime?
+>         original_data: changeEvent.fullDocumentBeforeChange,
+>         data: changeEvent.fullDocument,
+>       });
+>     }
+>   } catch(err) {
+>     console.log("error performing mongodb write: ", err.message);
+>   }
+> };
+> ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 11.2a Screenshot](assets/step-11.2a.png)
+![Step 11.2b Screenshot](assets/step-11.2b.png)
 
 
 
@@ -1138,12 +1253,55 @@ Screen Shot:
 
 - Use the following data to verify that the trigger functions as expected. Make sure that these updates are completed in more than one query:
 
+Update 1:
+
+| Field        | Value           |
+|--------------|----------------:|
+| Budget       | $237 million    |
+| Running time | 162 minutes     |
+| Box office   | $2.923 billion  |
+| Franchise    | Avatar          |
+
+Update 2:
+
+Add to Actors: Sam Worthington, Zoe Saldana, Stephen Lang, Michelle Rodriguez, Sigourney Weaver
+
 Query Solution:
 
+> My first attempt at setting up the trigger failed due to me putting in the wrong cluster name,
+> but the data was already updated top match what was required from update 1.
+> The solution that I adopted was to change the franchise to "Avatar!" before testing, to make sure that
+> the before and after documents really were different.
+>
+> Given that Worthington, Saldana and Weaver account for the current list of actors, I have chosen
+> to replace the list rather than pushing new items.
+>
+
 ```js
- db.films.find();
+ last_update = db.film_audit.aggregate([
+   { $match: { action: "UPDATE" } }, 
+   { $group: { _id: "all", max_date: { $max: "$action_date" } } },
+ ]).toArray();
+ last_timestamp = last_update.length > 0 ? last_update[0].max_date : Timestamp(0, 0);
+
+ result = db.films.updateOne(
+  { title: "Avatar" },
+  {
+    $set: {
+      actors: [ "Sam Worthington", "Zoe Saldana", "Stephen Lang", "Michelle Rodriguez", "Sigourney Weaver" ],
+    },
+  }
+ );
+
+ console.log(result);
+ console.log("Waiting for audit log to update (5s)");
+
+ sleep(5000);
+
+ audit_entry = db.film_audit.findOne({ action: "UPDATE", action_date: { $gt: last_timestamp }})
 ```
 
+![Step 11.4 Screenshot](assets/step-11.4.png)
 
 
 ## 11.5 Create trigger for deleted data
@@ -1152,9 +1310,27 @@ Query Solution:
 
 Query Solution:
 
-```js
- db.films.find();
-```
+> ```js
+> exports = async function(changeEvent) {
+>   // ChangeEvents: https://www.mongodb.com/docs/manual/reference/change-events
+> 
+>   const serviceName = "JFM-SaaS-NoSQL";
+>   const databaseName = "saas_bed_portfolio_2026s1";
+>   const audit = context.services.get(serviceName).db(databaseName).collection("film_audit");
+> 
+>   try {
+>     if (changeEvent.operationType === "delete") {
+>       await audit.insertOne({
+>         action: "DELETE",
+>         action_date: changeEvent.clusterTime, // better to use wallTime?
+>         original_data: changeEvent.fullDocumentBeforeChange,
+>       });
+>     }
+>   } catch(err) {
+>     console.log("error performing mongodb write: ", err.message);
+>   }
+> };
+> ```
 
 
 ## 11.6 Testing the delete trigger works correctly
@@ -1164,10 +1340,24 @@ Query Solution:
 Query Solution:
 
 ```js
- db.films.find();
+ db.films.insertOne({ title: "A Real Dummy" });
+ sleep(1000);
+
+ last_delete = db.film_audit.aggregate([
+   { $match: { action: "DELETE" } }, 
+   { $group: { _id: "all", max_date: { $max: "$action_date" } } },
+ ]).toArray();
+ last_timestamp = last_delete.length > 0 ? last_delete[0].max_date : Timestamp(0, 0);
+
+ response = db.films.deleteMany({ title: { $regex: /\bDummy\b/ } });
+
+ console.log(response);
+ console.log("Waiting for audit log to update (5s)");
+
+ sleep(2000);
+
+ audit_entry = db.film_audit.findOne({ action: "DELETE", action_date: { $gt: last_timestamp }});
 ```
-
-
 
 ## 11.7 Verify the log contains data…
 
@@ -1176,12 +1366,12 @@ Query Solution:
 Query Solution:
 
 ```js
- db.films.find();
+ db.film_audit.find();
 ```
 
 Screen Shot:
 
-![Step 3.3 Screenshot](assets/SCREENSHOT_FILENAME_HERE.svg)
+![Step 11.7 Screenshot](assets/step-11.7.png)
 
 
 
@@ -1191,10 +1381,12 @@ Screen Shot:
 What is the URL for your GitHub (or equivalent) repository for this assessment?
 
 ```text
-add url here
+https://github.com/jofish920/jfm-ict50220-saas-2-bed-nosql-2026-s1.git
 ```
 
 # References
+
+[^done-2023]: Done, P (2023) _Practical MongoDB Aggregations_.  Ebook. <https://www.practical-mongodb-aggregations.com/>
 
 [^laravel-13-docs]: Laravel Team. (n.d.). Documentation (Version 13.x). [Online documentation]. <https://laravel.com/docs/13.x>
 
@@ -1202,4 +1394,18 @@ add url here
 
 [^mongo-regex-prefix]: MongoDB (n.d.) \$regex (query predicate operator).  Page in MongoDB Online Documentation. <https://www.mongodb.com/docs/manual/reference/operator/query/regex/>
 
+
+# Cited
+
+The options that I currently have set in VS Code have a tendency to prune "unused" footnotes.
+Including all references here as well as in the body of the response is a temporary workaround
+to eliminate the possibility of the editor eating my references (again).
+
+[^done-2023]
+[^laravel-13-docs]
+[^mongo-field-names]
+[^mongo-regex-prefix]
+
 # END
+
+

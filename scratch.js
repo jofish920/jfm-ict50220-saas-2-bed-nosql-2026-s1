@@ -392,3 +392,11 @@ db.films.aggregate([
     { $match: { franchise: "Star Trek" } },
     { $count: "$film_count" }
 ])
+
+criteriaStar1 = { title: { $regex: /\bStar\b/ } };
+criteriaStar2 = {
+    $and: [
+        { $text: { $search: "Star" } },
+        criteriaStar1
+    ]
+};
